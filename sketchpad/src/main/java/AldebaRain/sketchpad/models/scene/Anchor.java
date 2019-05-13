@@ -1,4 +1,4 @@
-package AldebaRain.sketchpad.models;
+package AldebaRain.sketchpad.models.scene;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;

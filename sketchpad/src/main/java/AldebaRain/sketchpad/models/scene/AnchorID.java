@@ -1,4 +1,4 @@
-package AldebaRain.sketchpad.models;
+package AldebaRain.sketchpad.models.scene;
 
 /** 标识锚点位置，以区分拖拽时的行为 */
 public enum AnchorID {

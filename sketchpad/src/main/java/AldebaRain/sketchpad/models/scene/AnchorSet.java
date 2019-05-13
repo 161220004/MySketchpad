@@ -1,4 +1,4 @@
-package AldebaRain.sketchpad.models;
+package AldebaRain.sketchpad.models.scene;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 /** 锚点集，一个图形9个锚点 */
-public class AnchorSets {
+public class AnchorSet {
 
 	/** 锚点列表集，顺序是：中央，左，右，上，下，左上，左下，右上，右下 */
 	private List<Anchor> anchors;
@@ -28,7 +28,7 @@ public class AnchorSets {
 	private double xLengthDrag, yLengthDrag;
 
 	/** 锚点集初始化 */
-	public AnchorSets(Node node, double xLength, double yLength) {
+	public AnchorSet(Node node, double xLength, double yLength) {
 		
 		// 写入9个锚点
 		anchors = new ArrayList<>();
