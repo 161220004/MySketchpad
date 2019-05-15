@@ -1,6 +1,11 @@
 package AldebaRain.sketchpad.models.scene;
 
-/** 标识锚点位置，以区分拖拽时的行为 */
+/** 
+ * 标识锚点位置，以区分拖拽时的行为.<br>
+ * 位置包括：中心(C)，边(L, R, U, D)，角(LU, LD, RU, RD)
+ * 
+ * @see Anchor
+ */
 public enum AnchorID {
 	C(0, 0), L(-1, 0), R(1, 0), U(0, -1), D(0, 1), 
 	LU(-1, -1), LD(-1, 1), RU(1, -1), RD(1, 1);

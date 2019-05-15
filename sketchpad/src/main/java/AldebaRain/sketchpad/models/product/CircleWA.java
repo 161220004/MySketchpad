@@ -1,29 +1,31 @@
 package AldebaRain.sketchpad.models.product;
 
-import AldebaRain.sketchpad.models.scene.AnchorSet;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.Circle;
 
-/** 有锚点圆形(CircleWithAnchors).<br> 
- * 是工厂模式的具体产品类 */
-public class CircleWA extends AShapeWA {
-	
-	/** 构造函数（默认位置） */
-	public CircleWA(Shape shape, AnchorSet anchors, Pane pane) {
-		this.shape = shape;
-		this.anchors = anchors;
-		this.pane = pane;
-		init();
+/** 
+ * 锚点圆形类(Circle With Anchors).<br> 
+ * 是工厂模式的具体产品类
+ * 
+ * @see ShapeWA
+ * @see ANodeWA
+ */
+public class CircleWA extends ShapeWA{
+
+	/** 构造函数A - 当Circle形状已确认时调用 */
+	public CircleWA(Circle circle, Pane pane) {
+		super(circle, pane, 2 * circle.getRadius(), 2 * circle.getRadius());
 	}
 
-	/** 构造函数（指定位置） */
-	public CircleWA(Shape shape, AnchorSet anchors, Pane pane, double x, double y) {
-		this.shape = shape;
-		this.anchors = anchors;
-		this.pane = pane;
-		this.setTranslateX(x);
-		this.setTranslateY(y);
-		init();
+	/** 构造函数B（危险） - 当Circle形状未知时调用 */
+	@Deprecated
+	public CircleWA(Circle circle, Pane pane, double r, double x, double y) {
+		super(circle, pane, 2 * r, 2 * r, x, y);
 	}
-	
+
+	@Override
+	public String getDescription() {
+		return new String("圆形");
+	}
+
 }

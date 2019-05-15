@@ -5,7 +5,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-/** 锚点类型，用于图形缩放 */
+/** 
+ * 锚点类型，用于图形缩放 
+ * 
+ * @see AnchorID
+ */
 public class Anchor extends Rectangle {
 
 	/** 锚点形状 - 边长 */
@@ -34,8 +38,8 @@ public class Anchor extends Rectangle {
 		
     	// Id等初始化
 		anchorId = aid;
-		originX = this.getTranslateX();
-		originY = this.getTranslateY();
+		setOriginX(this.getTranslateX());
+		setOriginY(this.getTranslateY());
 	}
 
 	/** 获取锚点位置标识 */
@@ -54,13 +58,13 @@ public class Anchor extends Rectangle {
 	}
 
 	/** 拖拽后设置锚点新位置 - X */
-	public void setOriginY(double originY) {
-		this.originY = originY;
+	public void setOriginX(double originX) {
+		this.originX = originX;
 	}
 
 	/** 拖拽后设置锚点新位置 - Y */
-	public void setOriginX(double originX) {
-		this.originX = originX;
+	public void setOriginY(double originY) {
+		this.originY = originY;
 	}
 
 	/** 显示锚点 */
@@ -78,10 +82,9 @@ public class Anchor extends Rectangle {
 		pane.getChildren().add(this);
 	}
 	
-	/** 锚点位移(dx, dy) */
-	public void moveAnchor(double dx, double dy) {
-		this.setTranslateX(originX + dx);
-		this.setTranslateY(originY + dy);
+	/** （Debug使用）获取锚点位置 */
+	public String toString() {
+		return new String("(" + this.getTranslateX() + "," + this.getTranslateY() + ")");
 	}
 	
 }
