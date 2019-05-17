@@ -1,7 +1,6 @@
 package AldebaRain.sketchpad.models.product;
 
-import AldebaRain.sketchpad.models.scene.*;
-import javafx.scene.layout.Pane;
+import AldebaRain.sketchpad.models.anchor.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
@@ -11,26 +10,24 @@ import javafx.scene.shape.Shape;
  * 
  * @see ANodeWA
  */
-public abstract class ShapeWA extends ANodeWA {
+public abstract class AShapeWA extends ANodeWA {
 
 	/** 构造函数A - 当Shape形状已确认时调用 */
-	public ShapeWA(Shape shape, Pane pane, double xLength, double yLength) {
+	public AShapeWA(Shape shape, double xLength, double yLength) {
 		this.node = shape;
 		this.anchors = new AnchorShapeSet(shape, xLength, yLength);
-		this.pane = pane;
-		this.addtoPane(pane);
+		this.anchors.hide();
 		this.addMouseEvent();
 	}
 	
 	/** 构造函数B（危险） - 当Shape形状未知时调用 */
 	@Deprecated
-	public ShapeWA(Shape shape, Pane pane, double xLength, double yLength, double x, double y) {
+	public AShapeWA(Shape shape, double xLength, double yLength, double x, double y) {
 		shape.setTranslateX(x);
 		shape.setTranslateY(y);
 		this.node = shape;
 		this.anchors = new AnchorShapeSet(shape, xLength, yLength, x, y);
-		this.pane = pane;
-		this.addtoPane(pane);
+		this.anchors.hide();
 		this.addMouseEvent();
 	}
 

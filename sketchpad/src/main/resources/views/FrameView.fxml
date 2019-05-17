@@ -34,29 +34,19 @@
       </MenuBar>
    </top>
    <left>
-      <ToolBar orientation="VERTICAL" prefHeight="868.0" prefWidth="30.0" BorderPane.alignment="CENTER">
-        <items>
-          <Button fx:id="btnLineTool" mnemonicParsing="false" onAction="#onClickLineTool" />
-            <Button fx:id="btnOvalTool" mnemonicParsing="false" onAction="#onClickOvalTool" />
-            <Button fx:id="btnRectTool" mnemonicParsing="false" onAction="#onClickRectTool" />
-            <Button fx:id="btnTriTool" mnemonicParsing="false" onAction="#onClickTriTool" />
-            <Button fx:id="btnPolyTool" mnemonicParsing="false" onAction="#onClickPolyTool" />
-        </items>
-      </ToolBar>
+      <fx:include fx:id="tools" source="ToolsView.fxml"/> 
    </left>
    <center>
-      <TabPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TabPane fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab closable="true" text="new">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <Tab fx:id="moreTab" closable="false" text="+">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <StackPane fx:id="stackPane" layoutX="232.0" layoutY="213.0" prefHeight="829.0" prefWidth="863.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <StackPane fx:id="defaultPane" prefHeight="829.0" prefWidth="966.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
-            </content>
-          </Tab>
-            <Tab closable="false" text="+" />
+               </content></Tab>
         </tabs>
       </TabPane>
    </center>
@@ -65,65 +55,7 @@
         <tabs>
             <Tab text="属性">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Accordion prefHeight="337.0" prefWidth="246.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <panes>
-                              <TitledPane text="类型">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <Label layoutX="55.0" layoutY="14.0" prefHeight="30.0" text="图形" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </TitledPane>
-                              <TitledPane text="位置">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" text="X:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="0.0" />
-                                          <Label layoutX="14.0" layoutY="42.0" prefHeight="30.0" text="Y: " AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="30.0" />
-                                          <Label layoutX="16.0" layoutY="100.0" prefHeight="30.0" text="Y: " AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="90.0" />
-                                          <Label layoutX="16.0" layoutY="72.0" prefHeight="30.0" text="X:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="60.0" />
-                                          <TextField layoutX="23.0" layoutY="14.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
-                                          <TextField layoutX="27.0" layoutY="48.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="30.0" />
-                                          <TextField layoutX="33.0" layoutY="24.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="60.0" />
-                                          <TextField layoutX="43.0" layoutY="34.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="90.0" />
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </TitledPane>
-                              <TitledPane text="大小">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <Label layoutX="14.0" layoutY="21.0" prefHeight="30.0" text="X:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="0.0" />
-                                          <Label layoutX="24.0" layoutY="31.0" prefHeight="30.0" text="Y:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="30.0" />
-                                          <Label layoutX="34.0" layoutY="41.0" prefHeight="30.0" text="B:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="60.0" />
-                                          <TextField layoutX="-1.0" layoutY="12.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
-                                          <TextField layoutX="9.0" layoutY="22.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="30.0" />
-                                          <TextField layoutX="19.0" layoutY="32.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="60.0" />
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </TitledPane>
-                              <TitledPane text="颜色">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" text="Fill:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="0.0" />
-                                          <Label layoutX="24.0" layoutY="24.0" prefHeight="30.0" text="Stroke:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="30.0" />
-                                          <ColorPicker layoutX="86.0" layoutY="12.0" prefHeight="30.0" prefWidth="100.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
-                                          <ColorPicker layoutX="84.0" layoutY="42.0" prefHeight="30.0" prefWidth="100.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="30.0" />
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </TitledPane>
-                           </panes>
-                        </Accordion>
-                     </children>
-                  </AnchorPane>
+                  <fx:include fx:id="properties" source="PropertiesView.fxml"/> 
                </content>
             </Tab>
             <Tab text="图形">

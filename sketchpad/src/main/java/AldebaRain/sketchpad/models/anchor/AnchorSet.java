@@ -1,7 +1,8 @@
-package AldebaRain.sketchpad.models.scene;
+package AldebaRain.sketchpad.models.anchor;
 
 import java.util.List;
 
+import AldebaRain.sketchpad.App;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -28,6 +29,11 @@ public abstract class AnchorSet {
 	/** 锚点所在图形 */
 	protected Node parentNode;	
 
+	/** 鼠标事件 - 刷新属性面板 */
+	private void refreshPropertiesView() {
+		App.frameController.getPropertiesController().refreshPropertiesView();
+	}
+	
 	/** 锚点拖拽事件- 拖拽前初始化 */
 	protected abstract void initBeforeDrag(MouseEvent e);
 
@@ -40,13 +46,11 @@ public abstract class AnchorSet {
 	/** 构造函数初始化 - 添加锚点 */
 	protected abstract void addAnchors(Node node, double xLength, double yLength);
 	
-	/** 构造函数初始化 - 初始化拖拽图形相关信息 */
-	//protected abstract void initParentNode(Node node, double xLength, double yLength);
-
 	/** 添加锚点拖拽事件 */
-	protected void addMouseEvent() {
+	protected final void addMouseEvent() {
 		for (Anchor anchor: anchors) {
 			anchor.setOnMousePressed(e -> {
+				refreshPropertiesView();
 				initBeforeDrag(e);
 			});
 			anchor.setOnMouseDragged(e -> {
@@ -54,6 +58,7 @@ public abstract class AnchorSet {
 			});
 			anchor.setOnMouseReleased(e -> {
 				exitMouseDrag(anchor);
+				refreshPropertiesView();
 			});
 		}
 	}
@@ -62,6 +67,13 @@ public abstract class AnchorSet {
 	public void addtoPane(Pane pane) {
 		for (Anchor anchor: anchors) {
 			anchor.addtoPane(pane);
+		}
+	}
+
+	/** 从Pane移除锚点集 */
+	public void removeFromPane(Pane pane) {
+		for (Anchor anchor: anchors) {
+			anchor.removeFromPane(pane);
 		}
 	}
 

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="properties" minHeight="0.0" minWidth="0.0" prefHeight="868.0" prefWidth="240.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="AldebaRain.sketchpad.controllers.PropertiesController">
+   <children>
+      <Accordion fx:id="accordion" layoutX="10.0" layoutY="10.0" prefHeight="868.0" prefWidth="240.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <panes>
+            <TitledPane fx:id="ttp00" animated="false" text="类型描述">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="discLab" layoutX="55.0" layoutY="14.0" prefHeight="30.0" text="图形" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="ttp11" animated="false" text="位置">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="posXLab" layoutX="14.0" layoutY="14.0" prefHeight="30.0" text="X:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="0.0" />
+                        <Label fx:id="posYLab" layoutX="14.0" layoutY="42.0" prefHeight="30.0" text="Y: " AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="30.0" />
+                        <Label fx:id="posXEndLab" layoutX="16.0" layoutY="72.0" prefHeight="30.0" text="X:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="60.0" />
+                        <Label fx:id="posYEndLab" layoutX="16.0" layoutY="100.0" prefHeight="30.0" text="Y: " AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="90.0" />
+                        <TextField fx:id="posXField" layoutX="23.0" layoutY="14.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
+                        <TextField fx:id="posYField" layoutX="27.0" layoutY="48.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="30.0" />
+                        <TextField fx:id="posXEndField" layoutX="33.0" layoutY="24.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="60.0" />
+                        <TextField fx:id="posYEndField" layoutX="43.0" layoutY="34.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="90.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="ttp22" animated="false" text="大小">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="21.0" prefHeight="30.0" text="X:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="24.0" layoutY="31.0" prefHeight="30.0" text="Y:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="30.0" />
+                        <Label layoutX="34.0" layoutY="41.0" prefHeight="30.0" text="B:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="60.0" />
+                        <TextField fx:id="sizeXField" layoutX="-1.0" layoutY="12.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
+                        <TextField fx:id="sizeYField" layoutX="9.0" layoutY="22.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="30.0" />
+                        <TextField fx:id="sizeStrokeField" layoutX="19.0" layoutY="32.0" prefHeight="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="60.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="ttp33" animated="false" text="颜色">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" text="Fill:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="30.0" />
+                        <Label layoutX="24.0" layoutY="24.0" prefHeight="30.0" text="Stroke:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="0.0" />
+                        <ColorPicker fx:id="colorFillPicker" layoutX="86.0" layoutY="12.0" prefHeight="30.0" prefWidth="100.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="30.0" />
+                        <ColorPicker fx:id="colorStrokePicker" layoutX="84.0" layoutY="42.0" prefHeight="30.0" prefWidth="100.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+         </panes>
+      </Accordion>
+   </children>
+</AnchorPane>

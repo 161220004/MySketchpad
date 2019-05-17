@@ -1,4 +1,4 @@
-package AldebaRain.sketchpad.models.scene;
+package AldebaRain.sketchpad.models.anchor;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -80,6 +80,11 @@ public class Anchor extends Rectangle {
 	/** 添加锚点到Pane */
 	public void addtoPane(Pane pane) {
 		pane.getChildren().add(this);
+	}
+
+	/** 从Pane移除锚点 */
+	public void removeFromPane(Pane pane) {
+		pane.getChildren().remove(this);
 	}
 	
 	/** （Debug使用）获取锚点位置 */

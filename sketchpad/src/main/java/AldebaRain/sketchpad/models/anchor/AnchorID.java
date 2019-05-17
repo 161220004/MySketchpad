@@ -1,4 +1,4 @@
-package AldebaRain.sketchpad.models.scene;
+package AldebaRain.sketchpad.models.anchor;
 
 /** 
  * 标识锚点位置，以区分拖拽时的行为.<br>

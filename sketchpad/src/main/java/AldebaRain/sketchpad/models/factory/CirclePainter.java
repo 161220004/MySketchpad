@@ -1,9 +1,7 @@
 package AldebaRain.sketchpad.models.factory;
 
+import AldebaRain.sketchpad.manager.PaneManager;
 import AldebaRain.sketchpad.models.product.*;
-import AldebaRain.sketchpad.prefabs.Default;
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
 /** 
@@ -14,8 +12,8 @@ import javafx.scene.shape.Circle;
  */
 public class CirclePainter implements IPainter {
 
-	private Circle setNodeValue(Node node, double r, double x, double y) {
-		Circle circle = (Circle)node;
+	private Circle createCircle(double r, double x, double y) {
+		Circle circle = new Circle();
 		circle.setRadius(r);
 		circle.setTranslateX(x);
 		circle.setTranslateY(y);
@@ -23,35 +21,11 @@ public class CirclePainter implements IPainter {
 	}
 	
 	@Override
-	public ANodeWA paint(Node node, Pane pane) {
-		// 确认Circle形状为默认位置默认大小
-		Circle circle = setNodeValue(node, Default.circleRadius, Default.circleOX, Default.circleOY);
-		// 调用构造函数A型
-		return new CircleWA(circle, pane);
-	}
-
-	@Override
-	public ANodeWA paint(Node node, double xLen, double yLen, Pane pane) {
-		// 确认Circle形状为默认位置指定大小
-		Circle circle = setNodeValue(node, xLen / 2, Default.circleOX, Default.circleOY);
-		// 调用构造函数A型
-		return new CircleWA(circle, pane);
-	}
-
-	@Override
-	public ANodeWA paint(Node node, Pane pane, double x, double y) {
-		// 确认Circle形状为指定位置默认大小
-		Circle circle = setNodeValue(node, Default.circleRadius, x, y);
-		// 调用构造函数A型
-		return new CircleWA(circle, pane);
-	}
-
-	@Override
-	public ANodeWA paint(Node node, double xLen, double yLen, Pane pane, double x, double y) {
-		// 确认Circle形状为指定位置指定大小
-		Circle circle = setNodeValue(node, xLen / 2, x, y);
-		// 调用构造函数A型
-		return new CircleWA(circle, pane);
+	public void paint(double x, double y, double xLen, double yLen) {
+		Circle circle = createCircle(xLen / 2, x, y);
+		CircleWA circleWA = new CircleWA(circle);
+		// 在当前画布的当前图层绘制
+		PaneManager.getCurrentPane().getCurrentLayer().add(circleWA);
 	}
 
 }

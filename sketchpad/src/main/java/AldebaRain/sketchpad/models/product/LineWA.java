@@ -1,7 +1,6 @@
 package AldebaRain.sketchpad.models.product;
 
-import AldebaRain.sketchpad.models.scene.*;
-import javafx.scene.layout.Pane;
+import AldebaRain.sketchpad.models.anchor.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
@@ -14,27 +13,27 @@ import javafx.scene.shape.Line;
 public class LineWA extends ANodeWA {
 
 	/** 构造函数A - 当Line形状已确认时调用 */
-	public LineWA(Line line, Pane pane) {
+	public LineWA(Line line) {
+		this.type = NodeType.Line;
 		this.node = line;
 		this.anchors = new AnchorLineSet(line);
-		this.pane = pane;
-		this.addtoPane(pane);
+		this.anchors.hide();
 		this.addMouseEvent();
 	}
 
 	/** 构造函数B（危险） - 当Line形状未知时调用 */
 	@Deprecated
-	public LineWA(Line line, Pane pane , double xStart, double yStart, double xEnd, double yEnd) {
+	public LineWA(Line line, double xStart, double yStart, double xEnd, double yEnd) {
 		line.setTranslateX((xStart + xEnd) / 2);
 		line.setTranslateY((yStart + yEnd) / 2);
 		line.setStartX(xStart);
 		line.setStartY(yStart);
 		line.setEndX(xEnd);
 		line.setEndY(yEnd);
+		this.type = NodeType.Line;
 		this.node = line;
 		this.anchors = new AnchorLineSet(line, xStart, yStart, xEnd, yEnd);
-		this.pane = pane;
-		this.addtoPane(pane);
+		this.anchors.hide();
 		this.addMouseEvent();
 	}
 

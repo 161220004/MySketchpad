@@ -1,90 +1,66 @@
 package AldebaRain.sketchpad.controllers;
 
-import AldebaRain.sketchpad.models.factory.*;
+import AldebaRain.sketchpad.manager.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 
+/**
+ * 主界面控制器.<br>
+ * 引用的子界面有：菜单栏，工具箱，属性面板，历史记录面板，层次面板
+ * 
+ * @see MenuController
+ * @see ToolsController
+ * @see PropertiesController
+ * @see HistoryController
+ * @see HierarchyController
+ */
 public class FrameController {
 
-	/** 画布 */
-	@FXML 
-	private StackPane stackPane;
+	/** 主窗口（TabPane） */
+	@FXML
+	private TabPane mainPane;
+
+	/** 注入工具箱 */
+	@FXML
+    private AnchorPane tools;
 	
-	/** 工具箱 - 直线绘制*/
+	/** 注入工具箱控制器 */
 	@FXML
-	private Button btnLineTool;
-
-	/** 工具箱 - 椭圆绘制 */
-	@FXML
-	private Button btnOvalTool;
-
-	/** 工具箱 - 长方形绘制 */
-	@FXML
-	private Button btnRectTool;
-
-	/** 工具箱 - 三角形绘制 */
-	@FXML
-	private Button btnTriTool;
+    private ToolsController toolsController;
 	
-	/** 工具箱 - 多边形绘制 */
+	/** 注入属性面板 */
 	@FXML
-	private Button btnPolyTool;
+    private AnchorPane properties;
+	
+	/** 注入属性面板控制器 */
+	@FXML
+    private PropertiesController propertiesController;
+	
+	/** 画布新建功能标签页（Tab） */
+	@FXML
+	private Tab moreTab;
+	
+	/** 默认画布 */
+	@FXML
+	private StackPane defaultPane;
 
 	/** 自动初始化调用 */
     @FXML
     private void initialize() {
     	
-    	// 工具栏按钮加上图标
-    	Image lineImg = new Image(getClass().getClassLoader().getResourceAsStream("img/line_icon.png"));
-    	btnLineTool.setGraphic(new ImageView(lineImg));
-    	Image ovalImg = new Image(getClass().getClassLoader().getResourceAsStream("img/oval_icon.png"));
-    	btnOvalTool.setGraphic(new ImageView(ovalImg));
-    	Image rectImg = new Image(getClass().getClassLoader().getResourceAsStream("img/rect_icon.png"));
-    	btnRectTool.setGraphic(new ImageView(rectImg));
-    	Image triImg = new Image(getClass().getClassLoader().getResourceAsStream("img/tri_icon.png"));
-    	btnTriTool.setGraphic(new ImageView(triImg));
-    	Image polyImg = new Image(getClass().getClassLoader().getResourceAsStream("img/poly_icon.png"));
-    	btnPolyTool.setGraphic(new ImageView(polyImg));
+    	// 为默认画布新建图层管理器并设为画布管理器的当前画布
+    	PaneManager.setCurrentPane(new LayerManager(defaultPane));
     	
-    }
-    
-    /** 点击直线工具触发 */
-    @FXML
-    private void onClickLineTool() {
-    	Line line = new Line();
-    	IPainter linePainter = new LinePainter();
-    	linePainter.paint(line, stackPane);
-    }
-
-    /** 点击椭圆工具触发 */
-    @FXML
-    private void onClickOvalTool() {
-    	Circle circle = new Circle();
-    	IPainter circlePainter = new CirclePainter();
-    	circlePainter.paint(circle, 120, 120, stackPane);
-    }
-
-    /** 点击长方形工具触发 */
-    @FXML
-    private void onClickRectTool() {
+    	// 为添加画布标签添加动作
     	
     }
 
-    /** 点击三角形工具触发 */
-    @FXML
-    private void onClickTriTool() {
-    	
-    }
+    /** 获取属性面板控制器 */
+	public PropertiesController getPropertiesController() {
+		return this.propertiesController;
+	}
 
-    /** 点击多边形工具触发 */
-    @FXML
-    private void onClickPolyTool() {
-    	
-    }
-    
 }
