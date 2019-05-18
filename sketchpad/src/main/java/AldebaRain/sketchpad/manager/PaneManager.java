@@ -21,7 +21,6 @@ public class PaneManager extends AManager<LayerManager> {
 	private PaneManager() { 
 		list = new ArrayList<LayerManager>();
 		// TODO: currentPane的初始化
-		
 	}
 
 	/** 获取当前画板 */

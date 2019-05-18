@@ -36,6 +36,7 @@ public class AnchorLineSet extends AnchorSet {
 		yStartBefore = node.getStartY();
 		xEndBefore = node.getEndX();
 		yEndBefore = node.getEndY();
+		anchors = new ArrayList<>();
 		addAnchors(parentNode, (xEndBefore - xStartBefore), (yEndBefore - yStartBefore));
 		addMouseEvent();
 	}
@@ -51,6 +52,7 @@ public class AnchorLineSet extends AnchorSet {
 		yStartBefore = yStart;
 		xEndBefore = xEnd;
 		yEndBefore = yEnd;
+		anchors = new ArrayList<>();
 		addAnchors(parentNode, (xEnd - xStart), (yEnd - yStart));
 		addMouseEvent();
 	}
@@ -58,7 +60,6 @@ public class AnchorLineSet extends AnchorSet {
 	/** 构造函数初始化 - 添加锚点 */
 	@Override
 	protected void addAnchors(Node node, double xLength, double yLength) {
-		anchors = new ArrayList<>();
 		anchors.add(new Anchor(AnchorID.C, node, xLength, yLength));
 		anchors.add(new Anchor(AnchorID.LU, node, xLength, yLength));
 		anchors.add(new Anchor(AnchorID.RD, node, xLength, yLength));
@@ -67,10 +68,7 @@ public class AnchorLineSet extends AnchorSet {
 	/** 重写Line的锚点拖拽事件- 拖拽前初始化 */
 	@Override
 	protected void initBeforeDrag(MouseEvent e) {
-    	oxMouse = e.getSceneX();
-    	oyMouse = e.getSceneY();
-    	oxParent = parentLine.getTranslateX();
-    	oyParent = parentLine.getTranslateY();
+		super.initBeforeDrag(e);
     	xStartDrag = xStartBefore;
     	yStartDrag = yStartBefore;
     	xEndDrag = xEndBefore;
@@ -117,11 +115,119 @@ public class AnchorLineSet extends AnchorSet {
 	/** 重写Line的锚点拖拽事件 - 结束拖拽 */
 	@Override
 	protected void exitMouseDrag(Anchor anchor) {
-    	setOriginPositions();
+		super.exitMouseDrag(anchor);
     	xStartBefore = xStartDrag;
     	yStartBefore = yStartDrag;
     	xEndBefore = xEndDrag;
     	yEndBefore = yEndDrag;
+	}
+
+	@Override
+	public void setTranslateX(double x) {
+		super.setTranslateX(x);
+		// 处理图形
+		parentLine.setStartX(this.getAnchor(AnchorID.LU).getTranslateX());
+		parentLine.setEndX(this.getAnchor(AnchorID.RD).getTranslateX());
+		// 重新初始化拖拽前变量
+		this.setOriginPositions();
+		xStartBefore = parentLine.getStartX();
+		xEndBefore = parentLine.getEndX();
+	}
+	
+	@Override
+	public void setTranslateY(double y) {
+		super.setTranslateY(y);
+		// 处理图形
+		parentLine.setStartY(this.getAnchor(AnchorID.LU).getTranslateY());
+		parentLine.setEndY(this.getAnchor(AnchorID.RD).getTranslateY());
+		// 重新初始化拖拽前变量
+		this.setOriginPositions();
+		yStartBefore = parentLine.getStartY();
+		yEndBefore = parentLine.getEndY();
+	}
+	
+	@Override
+	public void setLengthX(double xLen) {
+		super.setLengthX(xLen);
+		// 处理图形
+		parentLine.setStartX(this.getAnchor(AnchorID.LU).getTranslateX());
+		parentLine.setEndX(this.getAnchor(AnchorID.RD).getTranslateX());
+		// 重新初始化拖拽前变量
+		this.setOriginPositions();
+		xStartBefore = parentLine.getStartX();
+		xEndBefore = parentLine.getEndX();
+	}
+	
+	@Override
+	public void setLengthY(double yLen) {
+		super.setLengthY(yLen);
+		// 处理图形
+		parentLine.setStartY(this.getAnchor(AnchorID.LU).getTranslateY());
+		parentLine.setEndY(this.getAnchor(AnchorID.RD).getTranslateY());
+		// 重新初始化拖拽前变量
+		this.setOriginPositions();
+		yStartBefore = parentLine.getStartY();
+		yEndBefore = parentLine.getEndY();
+	}
+	
+	/** 重设锚点集Start端X坐标 */
+	public void setStartX(double xStart) {
+		// 处理锚点集
+		double xEnd = this.getAnchor(AnchorID.RD).getTranslateX();
+		this.getAnchor(AnchorID.LU).setTranslateX(xStart);
+		this.getAnchor(AnchorID.C).setTranslateX((xStart + xEnd) / 2);
+		// 处理图形
+		parentLine.setTranslateX((xStart + xEnd) / 2);
+		parentLine.setStartX(xStart);
+		// 重新初始化拖拽前变量
+		this.setOriginPositions();
+		xStartBefore = parentLine.getStartX();
+		xEndBefore = parentLine.getEndX();
+	}
+
+	/** 重设锚点集Start端Y坐标 */
+	public void setStartY(double yStart) {
+		// 处理锚点集
+		double yEnd = this.getAnchor(AnchorID.RD).getTranslateY();
+		this.getAnchor(AnchorID.LU).setTranslateY(yStart);
+		this.getAnchor(AnchorID.C).setTranslateY((yStart + yEnd) / 2);
+		// 处理图形
+		parentLine.setTranslateY((yStart + yEnd) / 2);
+		parentLine.setStartY(yStart);
+		// 重新初始化拖拽前变量
+		this.setOriginPositions();
+		yStartBefore = parentLine.getStartY();
+		yEndBefore = parentLine.getEndY();
+	}
+
+	/** 重设锚点集End端X坐标 */
+	public void setEndX(double xEnd) {
+		// 处理锚点集
+		double xStart = this.getAnchor(AnchorID.LU).getTranslateX();
+		this.getAnchor(AnchorID.RD).setTranslateX(xEnd);
+		this.getAnchor(AnchorID.C).setTranslateX((xStart + xEnd) / 2);
+		// 处理图形
+		parentLine.setTranslateX((xStart + xEnd) / 2);
+		parentLine.setEndX(xEnd);
+		// 重新初始化拖拽前变量
+		this.setOriginPositions();
+		xStartBefore = parentLine.getStartX();
+		xEndBefore = parentLine.getEndX();
+	}
+
+	/** 重设锚点集End端Y坐标 */
+	public void setEndY(double yEnd) {
+		// 处理锚点集
+		double yStart = this.getAnchor(AnchorID.LU).getTranslateY();
+		this.getAnchor(AnchorID.RD).setTranslateY(yEnd);
+		this.getAnchor(AnchorID.C).setTranslateY((yStart + yEnd) / 2);
+		// 处理图形
+		parentLine.setTranslateY((yStart + yEnd) / 2);
+		parentLine.setEndY(yEnd);
+		// 重新初始化拖拽前变量
+		this.setOriginPositions();
+		yStartBefore = parentLine.getStartY();
+		yEndBefore = parentLine.getEndY();
 	}
 	
 }

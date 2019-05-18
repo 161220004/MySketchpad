@@ -16,7 +16,7 @@ public class AnchorShapeSet extends AnchorSet {
 	/** 锚点所在图形 */
 	private Shape parentShape;
 	/** 锚点所在图形 - 最初大小 */
-	private double xLengthOrigin, yLengthOrigin;
+	private final double xLengthOrigin, yLengthOrigin;
 	/** 锚点所在图形 - 拖拽前大小 */
 	private double xLengthBefore, yLengthBefore;
 	/** 锚点所在图形 - 拖拽时大小 */
@@ -30,6 +30,7 @@ public class AnchorShapeSet extends AnchorSet {
 		yLengthOrigin = yLength;
 		xLengthBefore = xLength;
 		yLengthBefore = yLength;
+		anchors = new ArrayList<>();
 		addAnchors(node, xLength, yLength);
 		addMouseEvent();
 	}
@@ -45,6 +46,7 @@ public class AnchorShapeSet extends AnchorSet {
 		yLengthOrigin = yLength;
 		xLengthBefore = xLength;
 		yLengthBefore = yLength;
+		anchors = new ArrayList<>();
 		addAnchors(node, xLength, yLength);
 		addMouseEvent();
 	}
@@ -52,7 +54,6 @@ public class AnchorShapeSet extends AnchorSet {
 	/** 构造函数初始化 - 添加锚点 */
 	@Override
 	protected void addAnchors(Node node, double xLength, double yLength) {
-		anchors = new ArrayList<>();
 		anchors.add(new Anchor(AnchorID.C, node, xLength, yLength));
 		anchors.add(new Anchor(AnchorID.L, node, xLength, yLength));
 		anchors.add(new Anchor(AnchorID.R, node, xLength, yLength));
@@ -67,10 +68,7 @@ public class AnchorShapeSet extends AnchorSet {
 	/** 锚点拖拽事件- 拖拽前初始化 */
 	@Override
 	protected void initBeforeDrag(MouseEvent e) {
-    	oxMouse = e.getSceneX();
-    	oyMouse = e.getSceneY();
-    	oxParent = parentShape.getTranslateX();
-    	oyParent = parentShape.getTranslateY();
+		super.initBeforeDrag(e);
     	xLengthDrag = xLengthBefore;
     	yLengthDrag = yLengthBefore;
     }
@@ -136,9 +134,37 @@ public class AnchorShapeSet extends AnchorSet {
 	/** 锚点拖拽事件 - 结束拖拽 */
 	@Override
 	protected void exitMouseDrag(Anchor anchor) {
-    	setOriginPositions();
+		super.exitMouseDrag(anchor);
     	xLengthBefore = xLengthDrag;
     	yLengthBefore = yLengthDrag;
     }
+
+	@Override
+	public void setTranslateX(double x) {
+		super.setTranslateX(x);
+		this.setOriginPositions();
+	}
+	
+	@Override
+	public void setTranslateY(double y) {
+		super.setTranslateY(y);
+		this.setOriginPositions();
+	}
+	
+	@Override
+	public void setLengthX(double xLen) {
+		super.setLengthX(xLen);
+		parentShape.setScaleX(xLen / xLengthOrigin);
+		this.setOriginPositions();
+    	xLengthBefore = xLen;
+	}
+	
+	@Override
+	public void setLengthY(double yLen) {
+		super.setLengthY(yLen);
+		parentShape.setScaleY(yLen / yLengthOrigin);
+		this.setOriginPositions();
+    	yLengthBefore = yLen;
+	}
 	
 }

@@ -29,19 +29,21 @@ public abstract class AnchorSet {
 	/** 锚点所在图形 */
 	protected Node parentNode;	
 
-	/** 鼠标事件 - 刷新属性面板 */
-	private void refreshPropertiesView() {
-		App.frameController.getPropertiesController().refreshPropertiesView();
-	}
-	
 	/** 锚点拖拽事件- 拖拽前初始化 */
-	protected abstract void initBeforeDrag(MouseEvent e);
+	protected void initBeforeDrag(MouseEvent e) {
+    	oxMouse = e.getSceneX();
+    	oyMouse = e.getSceneY();
+    	oxParent = this.getTranslateX();
+    	oyParent = this.getTranslateY();
+	}
 
 	/** 锚点拖拽事件 - 正在拖拽 */
 	protected abstract void followMouseDrag(MouseEvent e, Anchor anchor);
 
 	/** 锚点拖拽事件 - 结束拖拽 */
-	protected abstract void exitMouseDrag(Anchor anchor);
+	protected void exitMouseDrag(Anchor anchor) {
+		this.setOriginPositions();
+	}
 
 	/** 构造函数初始化 - 添加锚点 */
 	protected abstract void addAnchors(Node node, double xLength, double yLength);
@@ -50,7 +52,7 @@ public abstract class AnchorSet {
 	protected final void addMouseEvent() {
 		for (Anchor anchor: anchors) {
 			anchor.setOnMousePressed(e -> {
-				refreshPropertiesView();
+				App.frameController.getPropertiesController().refreshPropertiesView();
 				initBeforeDrag(e);
 			});
 			anchor.setOnMouseDragged(e -> {
@@ -58,7 +60,7 @@ public abstract class AnchorSet {
 			});
 			anchor.setOnMouseReleased(e -> {
 				exitMouseDrag(anchor);
-				refreshPropertiesView();
+				App.frameController.getPropertiesController().refreshPropertiesView();
 			});
 		}
 	}
@@ -74,14 +76,6 @@ public abstract class AnchorSet {
 	public void removeFromPane(Pane pane) {
 		for (Anchor anchor: anchors) {
 			anchor.removeFromPane(pane);
-		}
-	}
-
-	/** 所有锚点均位移(dx, dy) */
-	public void moveAllAnchors(double dx, double dy) {
-		for (Anchor anchor: anchors) {
-			anchor.setTranslateX(anchor.getOriginX() + dx);
-			anchor.setTranslateY(anchor.getOriginY() + dy);
 		}
 	}
 
@@ -115,7 +109,17 @@ public abstract class AnchorSet {
 		}
 		return null;
 	}
+
+	/** 获取锚点集中心X坐标 */
+	public double getTranslateX() {
+		return getAnchor(AnchorID.C).getTranslateX();
+	}
 	
+	/** 获取锚点集中心Y坐标 */
+	public double getTranslateY() {
+		return getAnchor(AnchorID.C).getTranslateY();
+	}
+
 	/** 获取锚点集X方向长度 */
 	public double getLengthX() {
 		Anchor aLU = getAnchor(AnchorID.LU);
@@ -135,5 +139,61 @@ public abstract class AnchorSet {
 		else 
 			return 0;
 	}
+
+	/** 重设锚点集X坐标 */
+	public void setTranslateX(double x) {
+		// 处理锚点集
+		double preX = this.getTranslateX();
+		double halfXLen = this.getLengthX() / 2;
+		for (Anchor anchor: anchors) {
+			double sign = (anchor.getTranslateX() < preX) ? (-1) : (1);
+			if (anchor.getAnchorId().getXDir() == 0)
+				sign = 0;
+			anchor.setTranslateX(x + sign * halfXLen);
+		}
+		// 处理图形
+		parentNode.setTranslateX(x);
+	}
 	
+	/** 重设锚点集Y坐标 */
+	public void setTranslateY(double y) {
+		// 处理锚点集
+		double preY = this.getTranslateY();
+		double halfYLen = this.getLengthY() / 2;
+		for (Anchor anchor: anchors) {
+			double sign = (anchor.getTranslateY() < preY) ? (-1) : (1);
+			if (anchor.getAnchorId().getYDir() == 0)
+				sign = 0;
+			anchor.setTranslateY(y + sign * halfYLen);
+		}
+		// 处理图形
+		parentNode.setTranslateY(y);
+	}
+	
+	/** 重设锚点集X方向长度 */
+	public void setLengthX(double xLen) {
+		// 处理锚点集
+		double x = this.getTranslateX();
+		for (Anchor anchor: anchors) {
+			double sign = (anchor.getTranslateX() < x) ? (-1) : (1);
+			if (anchor.getAnchorId().getXDir() == 0)
+				sign = 0;
+			anchor.setTranslateX(x + sign * xLen / 2);
+		}
+		// 处理图形在子类
+	}
+
+	/** 重设锚点集Y方向长度 */
+	public void setLengthY(double yLen) {
+		// 处理锚点集
+		double y = this.getTranslateY();
+		for (Anchor anchor: anchors) {
+			double sign = (anchor.getTranslateY() < y) ? (-1) : (1);
+			if (anchor.getAnchorId().getYDir() == 0)
+				sign = 0;
+			anchor.setTranslateY(y + sign * yLen / 2);
+		}
+		// 处理图形在子类
+	}
+
 }

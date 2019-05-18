@@ -29,4 +29,12 @@ public class CircleWA extends AShapeWA{
 		return new String("圆形");
 	}
 
+	@Override
+	public ANodeWA clone() {
+		CircleWA circleWA = new CircleWA((Circle)node);
+		// 少量偏移
+		
+		return circleWA;
+	}
+
 }

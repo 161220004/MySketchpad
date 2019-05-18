@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 
 public class PropertiesController {
 
@@ -79,6 +80,10 @@ public class PropertiesController {
 	@FXML
 	private ColorPicker colorStrokePicker;
 
+	/** 属性面板 - 颜色Ttp - 图形填充颜色标签 */
+	@FXML
+	private Label colorFillLab;
+
 	/** 属性面板 - 颜色Ttp - 图形填充颜色/直线不可见 */
 	@FXML
 	private ColorPicker colorFillPicker;
@@ -108,6 +113,34 @@ public class PropertiesController {
 		        });
 			}
     	});
+    	
+    	// 所有文本框添加焦点监听事件
+    	posXField.focusedProperty().addListener(listener -> { onPosXInputChanged(); });
+    	posYField.focusedProperty().addListener(listener -> { onPosYInputChanged(); });
+    	posXEndField.focusedProperty().addListener(listener -> { onPosXEndInputChanged(); });
+    	posYEndField.focusedProperty().addListener(listener -> { onPosYEndInputChanged(); });
+    	sizeXField.focusedProperty().addListener(listener -> { onSizeXLenInputChanged(); });
+    	sizeYField.focusedProperty().addListener(listener -> { onSizeYLenInputChanged(); });
+    	sizeStrokeField.focusedProperty().addListener(listener -> { onSizeStrokeInputChanged(); });
+    	colorFillPicker.setOnAction(e -> { onColorFillInputChanged(); });
+    	colorStrokePicker.setOnAction(e -> { onColorStrokeInputChanged(); });
+    }
+
+	/** 根据选中的图形，刷新属性界面的方法 */
+    public void refreshPropertiesView() {
+    	// 获取当前画布的图形选择器
+    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	// 若选中一个对象则显示属性面板，否则不显示
+    	if (selector.count() == 1) {
+    		accordion.setVisible(true);
+    		ANodeWA node = selector.getList().get(0);
+    		setDescription(node);
+    		setPosition(node);
+    		setSize(node);
+    		setColor(node);
+    	} else {
+    		accordion.setVisible(false);
+    	}
     }
     
     /** 设置类型描述属性 */
@@ -154,22 +187,135 @@ public class PropertiesController {
     private void setColor(ANodeWA node) {
     	colorFillPicker.setValue(node.getFill());
     	colorStrokePicker.setValue(node.getStroke());
+    	if (node.getType() == NodeType.Line) {
+    		colorFillLab.setVisible(false);
+    		colorFillPicker.setVisible(false);
+    	} else {
+    		colorFillLab.setVisible(true);
+    		colorFillPicker.setVisible(true);
+    	}
     }
 
-	/** 根据选中的图形，刷新属性界面的方法 */
-    public void refreshPropertiesView() {
+    /** 属性输入 - 输入坐标x */
+    private void onPosXInputChanged() {
     	// 获取当前画布的图形选择器
     	Selector selector = PaneManager.getCurrentPane().getSelector();
-    	// 若选中一个对象则显示属性面板，否则不显示
+    	// 若选中一个对象则对其进行更改
     	if (selector.count() == 1) {
-    		accordion.setVisible(true);
     		ANodeWA node = selector.getList().get(0);
-    		setDescription(node);
-    		setPosition(node);
-    		setSize(node);
-    		setColor(node);
-    	} else {
-    		accordion.setVisible(false);
+    		Double x = Double.valueOf(posXField.getText());
+    		if (x != null) {
+    			if (node.getType() == NodeType.Line)
+    				((LineWA)node).setStartX(x);
+    			else
+    				node.setTranslateX(x);
+    		}
+    	}
+    }    
+    
+    /** 属性输入 - 输入y坐标 */
+    private void onPosYInputChanged() {
+    	// 获取当前画布的图形选择器
+    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	// 若选中一个对象则对其进行更改
+    	if (selector.count() == 1) {
+    		ANodeWA node = selector.getList().get(0);
+    		Double y = Double.valueOf(posYField.getText());
+    		if (y != null) {
+    			if (node.getType() == NodeType.Line)
+    				((LineWA)node).setStartY(y);
+    			else 
+    				node.setTranslateY(y);
+    		}
+    	}    	
+    }    
+
+    /** 属性输入 - 输入坐标xEnd */
+    private void onPosXEndInputChanged() {
+    	// 获取当前画布的图形选择器
+    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	// 若选中一个对象则对其进行更改
+    	if (selector.count() == 1) {
+    		ANodeWA node = selector.getList().get(0);
+    		Double xEnd = Double.valueOf(posXEndField.getText());
+    		if (node.getType() == NodeType.Line && xEnd != null) 
+				((LineWA)node).setEndX(xEnd);
+    	}
+    }    
+
+    /** 属性输入 - 输入坐标yEnd */
+    private void onPosYEndInputChanged() {
+    	// 获取当前画布的图形选择器
+    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	// 若选中一个对象则对其进行更改
+    	if (selector.count() == 1) {
+    		ANodeWA node = selector.getList().get(0);
+    		Double yEnd = Double.valueOf(posYEndField.getText());
+    		if (node.getType() == NodeType.Line && yEnd != null) 
+				((LineWA)node).setEndY(yEnd);
+    	}
+    }    
+
+    /** 属性输入 - 输入x方向长度 */
+    private void onSizeXLenInputChanged() {
+    	// 获取当前画布的图形选择器
+    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	// 若选中一个对象则对其进行更改
+    	if (selector.count() == 1) {
+    		ANodeWA node = selector.getList().get(0);
+    		Double xLen = Double.valueOf(sizeXField.getText());
+    		if (xLen != null) 
+				node.setLengthX(xLen);
+    	}
+    }    
+
+    /** 属性输入 - 输入y方向长度 */
+    private void onSizeYLenInputChanged() {
+    	// 获取当前画布的图形选择器
+    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	// 若选中一个对象则对其进行更改
+    	if (selector.count() == 1) {
+    		ANodeWA node = selector.getList().get(0);
+    		Double yLen = Double.valueOf(sizeYField.getText());
+    		if (yLen != null) 
+				node.setLengthY(yLen);
+    	}
+    }    
+
+    /** 属性输入 - 输入边框宽度 */
+    private void onSizeStrokeInputChanged() {
+    	// 获取当前画布的图形选择器
+    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	// 若选中一个对象则对其进行更改
+    	if (selector.count() == 1) {
+    		ANodeWA node = selector.getList().get(0);
+    		Double width = Double.valueOf(sizeStrokeField.getText());
+    		if (width != null) 
+				node.setStrokeWidth(width);
+    	}
+    }    
+    
+    /** 属性输入 - 输入填充颜色 */
+    private void onColorFillInputChanged() {
+    	// 获取当前画布的图形选择器
+    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	// 若选中一个对象则对其进行更改
+    	if (selector.count() == 1) {
+    		ANodeWA node = selector.getList().get(0);
+    		Color fill = colorFillPicker.getValue();
+			node.setFill(fill);
+    	}
+    }
+
+    /** 属性输入 - 输入边框颜色 */
+    private void onColorStrokeInputChanged() {
+    	// 获取当前画布的图形选择器
+    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	// 若选中一个对象则对其进行更改
+    	if (selector.count() == 1) {
+    		ANodeWA node = selector.getList().get(0);
+    		Color color = colorStrokePicker.getValue();
+			node.setStroke(color);
     	}
     }
     

@@ -20,6 +20,7 @@ public class LinePainter implements IPainter {
 		line.setStartY(yStart);
 		line.setEndX(xEnd);
 		line.setEndY(yEnd);
+		line.setStrokeWidth(3);
 		return line;
 	}
 	

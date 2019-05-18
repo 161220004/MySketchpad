@@ -1,8 +1,5 @@
 package AldebaRain.sketchpad.models.product;
 
-import java.util.Iterator;
-import java.util.List;
-
 import AldebaRain.sketchpad.App;
 import AldebaRain.sketchpad.manager.PaneManager;
 import AldebaRain.sketchpad.manager.Selector;
@@ -14,7 +11,8 @@ import javafx.scene.paint.Color;
 
 /** 
  * 锚点图形抽象类(Abstract Node With Anchors).<br> 
- * 是适配器模式的目标抽象类，也是工厂模式的抽象产品类
+ * 是适配器模式的目标抽象类，也是工厂模式的抽象产品类<br>
+ * 同时也使用了原型模式，以实现复制粘贴
  * 
  * @see AShapeWA
  * @see LineWA
@@ -36,27 +34,6 @@ public abstract class ANodeWA {
 	/** 原位置 - 图形 */
 	private double originX, originY;
 
-	/** 鼠标事件 - 刷新属性面板 */
-	private void refreshPropertiesView() {
-		App.frameController.getPropertiesController().refreshPropertiesView();
-	}
-
-	/** 鼠标事件 - 根据图形的选择情况刷新画布 */
-	private void refreshView() {
-		// 获取画布上的所有图形
-		List<ANodeWA> allNodes = PaneManager.getCurrentPane().getAllNodes();
-		// 获取选中的所有图形
-		Selector selector = PaneManager.getCurrentPane().getSelector();
-		Iterator<ANodeWA> it = allNodes.iterator();
-		while (it.hasNext()) {
-			ANodeWA node = it.next();
-			if (selector.contains(node)) // 被选中
-				node.anchors.show();
-			else // 未选中
-				node.anchors.hide();
-		}
-	}
-	
 	/** 选中事件 - 根据情况操作图形选择器 */
 	private void addToSelector() {
 		Selector selector = PaneManager.getCurrentPane().getSelector();
@@ -66,39 +43,39 @@ public abstract class ANodeWA {
 			selector.change(this);
 		}
 		// 刷新属性面板和画布
-		refreshView();
-		refreshPropertiesView();
+		App.frameController.refreshView();
+		App.frameController.getPropertiesController().refreshPropertiesView();
 	}
 	
 	/** 图形拖拽事件- 拖拽前初始化以及图形选定 */
 	private void initBeforeDrag(MouseEvent e) {
     	originMouseX = e.getSceneX();
         originMouseY = e.getSceneY();
-        originX = node.getTranslateX();
-        originY = node.getTranslateY();
+        originX = anchors.getTranslateX();
+        originY = anchors.getTranslateY();
 	}
 
 	/** 图形拖拽事件 - 正在拖拽 */
 	private void followMouseDrag(MouseEvent e) {
     	double dx = e.getSceneX() - originMouseX;
         double dy = e.getSceneY() - originMouseY;
-        node.setTranslateX(dx + originX);
-        node.setTranslateY(dy + originY);
-        anchors.moveAllAnchors(dx, dy);
+        this.setTranslateX(dx + originX);
+        this.setTranslateY(dy + originY);
 	}
 
 	/** 图形拖拽事件 - 结束拖拽 */
 	private void exitMouseDrag() {
         anchors.setOriginPositions();
 		// 刷新属性面板和画布
-        refreshView();
-		refreshPropertiesView();
+		App.frameController.refreshView();
+		App.frameController.getPropertiesController().refreshPropertiesView();
 	}	
 
 	/** 添加图形拖拽事件 */
 	protected final void addMouseEvent() {
 		node.setOnMousePressed(e -> {
 			addToSelector();
+			App.frameController.getPropertiesController().refreshPropertiesView();
 			initBeforeDrag(e);
 		});
 		node.setOnMouseDragged(e -> {
@@ -106,9 +83,20 @@ public abstract class ANodeWA {
 		});
 		node.setOnMouseReleased(e -> {
 			exitMouseDrag();
+			App.frameController.getPropertiesController().refreshPropertiesView();
 		});
 	}
 
+	/** 显示锚点集 */
+	public void showAnchors() {
+		anchors.show();
+	}
+	
+	/** 隐藏锚点集 */
+	public void hideAnchors() {
+		anchors.hide();
+	}
+	
 	/** 添加图形到Pane */
 	public void addtoPane(Pane pane) {
 		pane.getChildren().add(node);
@@ -130,24 +118,56 @@ public abstract class ANodeWA {
 	public abstract String getDescription();
 
 	/** 适配函数 - 获取图形中心X坐标 */
-	public abstract double getTranslateX();
+	public double getTranslateX() {
+		return anchors.getTranslateX();
+	}
+
+	/** 适配函数 - 重设图形中心X坐标 */
+	public void setTranslateX(double x) {
+		anchors.setTranslateX(x);
+	}
 
 	/** 适配函数 - 获取图形中心Y坐标 */
-	public abstract double getTranslateY();
+	public double getTranslateY() {
+		return anchors.getTranslateY();
+	}
+
+	/** 适配函数 - 重设图形中心Y坐标 */
+	public void setTranslateY(double y) {
+		anchors.setTranslateY(y);
+	}
 
 	/** 适配函数 - 获取图形X方向长度 */
 	public abstract double getLengthX();
 
+	/** 适配函数 - 重设图形X方向长度 */
+	public abstract void setLengthX(double xLen);
+
 	/** 适配函数 - 获取图形Y方向长度 */
 	public abstract double getLengthY();
+
+	/** 适配函数 - 重设图形Y方向长度 */
+	public abstract void setLengthY(double yLen);
 
 	/** 适配函数 - 获取图形边框宽度 */
 	public abstract double getStrokeWidth();
 
+	/** 适配函数 - 重设图形边框宽度 */
+	public abstract void setStrokeWidth(double width);
+
 	/** 适配函数 - 获取图形颜色 */
 	public abstract Color getFill();
+
+	/** 适配函数 - 重设图形颜色 */
+	public abstract void setFill(Color color);
 
 	/** 适配函数 - 获取图形边框颜色 */
 	public abstract Color getStroke();
 
+	/** 适配函数 - 重设图形边框颜色 */
+	public abstract void setStroke(Color color);
+
+	/** 原型模式 - 深克隆 */
+	public abstract ANodeWA clone();
+	
 }

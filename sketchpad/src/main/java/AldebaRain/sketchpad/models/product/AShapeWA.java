@@ -32,28 +32,33 @@ public abstract class AShapeWA extends ANodeWA {
 	}
 
 	@Override
-	public double getTranslateX() {
-		return node.getTranslateX();
-	}
-
-	@Override
-	public double getTranslateY() {
-		return node.getTranslateY();
-	}
-
-	@Override
 	public double getLengthX() {
 		return anchors.getLengthX();
 	}
 
+	@Override
+	public void setLengthX(double xLen) {
+		anchors.setLengthX(xLen);
+	}
+	
 	@Override
 	public double getLengthY() {
 		return anchors.getLengthY();
 	}
 
 	@Override
+	public void setLengthY(double yLen) {
+		anchors.setLengthY(yLen);
+	}
+	
+	@Override
 	public double getStrokeWidth() {
 		return ((Shape)node).getStrokeWidth();
+	}
+	
+	@Override
+	public void setStrokeWidth(double width) {
+		((Shape)node).setStrokeWidth(width);
 	}
 	
 	@Override
@@ -62,8 +67,18 @@ public abstract class AShapeWA extends ANodeWA {
 	}
 
 	@Override
+	public void setFill(Color color) {
+		((Shape)node).setFill(color);
+	}
+	
+	@Override
 	public Color getStroke() {
 		return (Color)((Shape)node).getStroke();
+	}
+
+	@Override
+	public void setStroke(Color color) {
+		((Shape)node).setStroke(color);
 	}
 
 }

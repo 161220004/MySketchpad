@@ -36,50 +36,32 @@ public class LineWA extends ANodeWA {
 		this.anchors.hide();
 		this.addMouseEvent();
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return new String("直线");
 	}
 
-	@Override
-	public double getTranslateX() {
-		return (((Line)node).getEndX() + ((Line)node).getStartX()) / 2;
-	}
-
-	@Override
-	public double getTranslateY() {
-		return (((Line)node).getEndY() + ((Line)node).getStartY()) / 2;
-	}
-
-	/** 获取直线左侧端点X坐标 */
+	/** 获取Start端点，即直线初始化时LU锚点的X坐标 */
 	public double getStartX() {
-		Anchor aLU = anchors.getAnchor(AnchorID.LU);
-		Anchor aRD = anchors.getAnchor(AnchorID.RD);
-		return ((aLU.getTranslateX() < aRD.getTranslateX()) ? aLU.getTranslateX() : aRD.getTranslateX());
+		return anchors.getAnchor(AnchorID.LU).getTranslateX();
 	}
 
-	/** 获取直线左侧端点Y坐标 */
+	/** 获取Start端点，即直线初始化时LU锚点的Y坐标 */
 	public double getStartY() {
-		Anchor aLU = anchors.getAnchor(AnchorID.LU);
-		Anchor aRD = anchors.getAnchor(AnchorID.RD);
-		return ((aLU.getTranslateY() < aRD.getTranslateY()) ? aLU.getTranslateY() : aRD.getTranslateY());
+		return anchors.getAnchor(AnchorID.LU).getTranslateY();
 	}
 
-	/** 获取直线右侧端点X坐标 */
-	public double getEndX() {
-		Anchor aLU = anchors.getAnchor(AnchorID.LU);
-		Anchor aRD = anchors.getAnchor(AnchorID.RD);
-		return ((aLU.getTranslateX() > aRD.getTranslateX()) ? aLU.getTranslateX() : aRD.getTranslateX());
-	}
-
-	/** 获取直线右侧端点Y坐标 */
+	/** 获取End端点，即直线初始化时RD锚点的Y坐标 */
 	public double getEndY() {
-		Anchor aLU = anchors.getAnchor(AnchorID.LU);
-		Anchor aRD = anchors.getAnchor(AnchorID.RD);
-		return ((aLU.getTranslateY() > aRD.getTranslateY()) ? aLU.getTranslateY() : aRD.getTranslateY());
+		return anchors.getAnchor(AnchorID.RD).getTranslateY();
 	}
-	
+
+	/** 获取End端点，即直线初始化时RD锚点的X坐标 */
+	public double getEndX() {
+		return anchors.getAnchor(AnchorID.RD).getTranslateX();
+	}
+
 	@Override
 	public double getLengthX() {
 		return Math.abs(((Line)node).getEndX() - ((Line)node).getStartX());
@@ -103,6 +85,59 @@ public class LineWA extends ANodeWA {
 	@Override
 	public Color getStroke() {
 		return (Color)((Line)node).getStroke();
+	}
+
+	/** 重设Start端点，即直线初始化时LU锚点的X坐标 */
+	public void setStartX(double xStart) {
+		((AnchorLineSet)anchors).setStartX(xStart);
+	}
+
+	/** 重设End端点，即直线初始化时RD锚点的X坐标 */
+	public void setEndX(double xEnd) {
+		((AnchorLineSet)anchors).setEndX(xEnd);
+	}
+
+	/** 重设Start端点，即直线初始化时LU锚点的Y坐标 */
+	public void setStartY(double yStart) {
+		((AnchorLineSet)anchors).setStartY(yStart);
+	}
+
+	/** 重设End端点，即直线初始化时RD锚点的Y坐标 */
+	public void setEndY(double yEnd) {
+		((AnchorLineSet)anchors).setEndY(yEnd);
+	}
+
+	@Override
+	public void setLengthX(double xLen) {
+		anchors.setLengthX(xLen);
+	}
+
+	@Override
+	public void setLengthY(double yLen) {
+		anchors.setLengthY(yLen);
+	}
+
+	@Override
+	public void setStrokeWidth(double width) {
+		((Line)node).setStrokeWidth(width);
+	}
+
+	@Override
+	public void setFill(Color color) {
+		((Line)node).setFill(color);
+	}
+
+	@Override
+	public void setStroke(Color color) {
+		((Line)node).setStroke(color);
+	}
+
+	@Override
+	public ANodeWA clone() {
+		LineWA lineWA = new LineWA((Line)node);
+		// 少量偏移
+		
+		return lineWA;
 	}
 
 }

@@ -1,6 +1,10 @@
 package AldebaRain.sketchpad.controllers;
 
+import java.util.Iterator;
+import java.util.List;
+
 import AldebaRain.sketchpad.manager.*;
+import AldebaRain.sketchpad.models.product.ANodeWA;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -46,13 +50,16 @@ public class FrameController {
 	/** 默认画布 */
 	@FXML
 	private StackPane defaultPane;
-
+	
 	/** 自动初始化调用 */
     @FXML
     private void initialize() {
     	
     	// 为默认画布新建图层管理器并设为画布管理器的当前画布
     	PaneManager.setCurrentPane(new LayerManager(defaultPane));
+
+    	// 初始化属性面板
+    	propertiesController.refreshPropertiesView();
     	
     	// 为添加画布标签添加动作
     	
@@ -61,6 +68,22 @@ public class FrameController {
     /** 获取属性面板控制器 */
 	public PropertiesController getPropertiesController() {
 		return this.propertiesController;
+	}
+
+	/** 根据图形的选择情况刷新画布 */
+	public void refreshView() {
+		// 获取画布上的所有图形
+		List<ANodeWA> allNodes = PaneManager.getCurrentPane().getAllNodes();
+		// 获取选中的所有图形
+		Selector selector = PaneManager.getCurrentPane().getSelector();
+		Iterator<ANodeWA> it = allNodes.iterator();
+		while (it.hasNext()) {
+			ANodeWA node = it.next();
+			if (selector.contains(node)) // 被选中
+				node.showAnchors();
+			else // 未选中
+				node.hideAnchors();
+		}
 	}
 
 }
