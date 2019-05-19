@@ -12,17 +12,23 @@ import javafx.scene.shape.Shape;
  */
 public abstract class AShapeWA extends ANodeWA {
 
-	/** 构造函数A - 当Shape形状已确认时调用 */
-	public AShapeWA(Shape shape, double xLength, double yLength) {
+	/** 构造函数A - 当Shape形状已确认且无伸缩时调用 */
+	protected AShapeWA(Shape shape, double xLength, double yLength) {
 		this.node = shape;
-		this.anchors = new AnchorShapeSet(shape, xLength, yLength);
+		this.anchors = new AnchorShapeSet(shape, xLength, yLength, xLength, yLength);
 		this.anchors.hide();
+		this.addMouseEvent();
+	}
+
+	/** 构造函数0，仅用于克隆 */
+	protected AShapeWA(Shape shape) {
+		this.node = shape;
 		this.addMouseEvent();
 	}
 	
 	/** 构造函数B（危险） - 当Shape形状未知时调用 */
 	@Deprecated
-	public AShapeWA(Shape shape, double xLength, double yLength, double x, double y) {
+	protected AShapeWA(Shape shape, double xLength, double yLength, double x, double y) {
 		shape.setTranslateX(x);
 		shape.setTranslateY(y);
 		this.node = shape;

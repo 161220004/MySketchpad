@@ -1,7 +1,7 @@
 package AldebaRain.sketchpad.controllers;
 
+import AldebaRain.sketchpad.Default;
 import AldebaRain.sketchpad.models.factory.*;
-import AldebaRain.sketchpad.prefabs.Default;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;

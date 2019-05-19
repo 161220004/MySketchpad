@@ -15,7 +15,8 @@ public class AnchorShapeSet extends AnchorSet {
 
 	/** 锚点所在图形 */
 	private Shape parentShape;
-	/** 锚点所在图形 - 最初大小 */
+	/** 锚点所在图形 - 最初大小<br>
+	 * 无论如何伸缩，只有最初构造时的长才是其最初大小 */
 	private final double xLengthOrigin, yLengthOrigin;
 	/** 锚点所在图形 - 拖拽前大小 */
 	private double xLengthBefore, yLengthBefore;
@@ -23,11 +24,11 @@ public class AnchorShapeSet extends AnchorSet {
 	private double xLengthDrag, yLengthDrag;
 
 	/** 构造函数A - 当Shape形状已确认时调用 */
-	public AnchorShapeSet(Shape node, double xLength, double yLength) {
+	public AnchorShapeSet(Shape node, double xOrigin, double yOrigin, double xLength, double yLength) {
 		parentNode = node;
 		parentShape = (Shape)parentNode;
-		xLengthOrigin = xLength;
-		yLengthOrigin = yLength;
+		xLengthOrigin = xOrigin;
+		yLengthOrigin = yOrigin;
 		xLengthBefore = xLength;
 		yLengthBefore = yLength;
 		anchors = new ArrayList<>();
@@ -37,13 +38,13 @@ public class AnchorShapeSet extends AnchorSet {
 
 	/** 构造函数B（危险） - 当Shape形状未知时调用 */
 	@Deprecated
-	public AnchorShapeSet(Shape node, double xLength, double yLength, double x, double y) {
+	public AnchorShapeSet(Shape node, double xOrigin, double yOrigin, double xLength, double yLength, double x, double y) {
 		parentNode = node;
 		parentNode.setTranslateX(x);
 		parentNode.setTranslateY(y);
 		parentShape = (Shape)parentNode;
-		xLengthOrigin = xLength;
-		yLengthOrigin = yLength;
+		xLengthOrigin = xOrigin;
+		yLengthOrigin = yOrigin;
 		xLengthBefore = xLength;
 		yLengthBefore = yLength;
 		anchors = new ArrayList<>();

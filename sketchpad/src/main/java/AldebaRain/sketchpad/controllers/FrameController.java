@@ -3,12 +3,15 @@ package AldebaRain.sketchpad.controllers;
 import java.util.Iterator;
 import java.util.List;
 
+import AldebaRain.sketchpad.State;
 import AldebaRain.sketchpad.manager.*;
 import AldebaRain.sketchpad.models.product.ANodeWA;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -23,9 +26,13 @@ import javafx.scene.layout.StackPane;
  */
 public class FrameController {
 
-	/** 主窗口（TabPane） */
+	/** 主界面 */
 	@FXML
-	private TabPane mainPane;
+	private BorderPane frameWindow;
+	
+	/** 画布窗口 */
+	@FXML
+	private TabPane paneTabManager;
 
 	/** 注入工具箱 */
 	@FXML
@@ -60,6 +67,31 @@ public class FrameController {
 
     	// 初始化属性面板
     	propertiesController.refreshPropertiesView();
+    	
+    	// 添加复制粘贴的快捷键监听；添加图形复选Ctrl的快捷键监听
+    	frameWindow.setOnKeyPressed(e -> {
+    		if (e.isControlDown()) {
+        		// 复制(Ctrl+C)
+        		if (e.getCode() == KeyCode.C) {
+        			// 获取选中的所有图形
+        			Selector selector = PaneManager.getCurrentPane().getSelector();
+        			Clipboard.getInstance().copy(selector.getList());
+        		}
+        		// 粘贴(Ctrl+V)
+        		else if (e.getCode() == KeyCode.V) {
+        			Clipboard.getInstance().paste();
+        		}
+        		// 图形复选(Ctrl)
+        		else {
+    				State.isMultiSelectState = true;
+				}
+    		}
+    	});
+    	frameWindow.setOnKeyReleased(e -> {
+			if (!e.isControlDown()) {
+				State.isMultiSelectState = false;
+			}
+    	});
     	
     	// 为添加画布标签添加动作
     	

@@ -38,6 +38,11 @@ public class LayerManager extends AManager<Layer> {
 	public Selector getSelector() {
 		return selector;
 	}
+	
+	/** 获取当前画布 */
+	public Pane getPane() {
+		return pane;
+	}
 
 	/** 获取当前选中的图层 */
 	public Layer getCurrentLayer() {

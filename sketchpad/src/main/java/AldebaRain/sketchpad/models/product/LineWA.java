@@ -1,5 +1,6 @@
 package AldebaRain.sketchpad.models.product;
 
+import AldebaRain.sketchpad.Default;
 import AldebaRain.sketchpad.models.anchor.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -132,11 +133,25 @@ public class LineWA extends ANodeWA {
 		((Line)node).setStroke(color);
 	}
 
+	/** 克隆一个Line类型 */
+	private Line cloneLine(Line line) {
+		Line newLine = new Line();
+		// 少量偏移
+		newLine.setStartX(line.getStartX() + Default.pasteBiasX);
+		newLine.setStartY(line.getStartY() + Default.pasteBiasY);
+		newLine.setEndX(line.getEndX() + Default.pasteBiasX);
+		newLine.setEndY(line.getEndY() + Default.pasteBiasY);
+		newLine.setTranslateX(line.getTranslateX() + Default.pasteBiasX);
+		newLine.setTranslateY(line.getTranslateY() + Default.pasteBiasY);
+		newLine.setStrokeWidth(line.getStrokeWidth());
+		newLine.setStroke(line.getStroke());
+		return newLine;
+	}
+	
 	@Override
 	public ANodeWA clone() {
-		LineWA lineWA = new LineWA((Line)node);
-		// 少量偏移
-		
+		Line line = cloneLine((Line)node);
+		LineWA lineWA = new LineWA(line);
 		return lineWA;
 	}
 

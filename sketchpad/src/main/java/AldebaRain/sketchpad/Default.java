@@ -1,4 +1,4 @@
-package AldebaRain.sketchpad.prefabs;
+package AldebaRain.sketchpad;
 
 /** 存储预设值 */
 public class Default {
@@ -29,5 +29,11 @@ public class Default {
 
 	/** 长方形默认宽 */
 	public static final double rectYLength = 60;
+	
+	/** 复制粘贴默认位移X */
+	public static final double pasteBiasX = 10;
+	
+	/** 复制粘贴默认位移Y */
+	public static final double pasteBiasY = 10;
 	
 }

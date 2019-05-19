@@ -3,6 +3,7 @@ package AldebaRain.sketchpad.models.anchor;
 import java.util.List;
 
 import AldebaRain.sketchpad.App;
+import AldebaRain.sketchpad.State;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -48,18 +49,25 @@ public abstract class AnchorSet {
 	/** 构造函数初始化 - 添加锚点 */
 	protected abstract void addAnchors(Node node, double xLength, double yLength);
 	
-	/** 添加锚点拖拽事件 */
+	/** 添加锚点拖拽事件；
+	 * 添加功能使锚点拖拽时显示位置 */
 	protected final void addMouseEvent() {
 		for (Anchor anchor: anchors) {
 			anchor.setOnMousePressed(e -> {
-				App.frameController.getPropertiesController().refreshPropertiesView();
 				initBeforeDrag(e);
+				if (State.showDragAnchorPosTips)
+					anchor.initTipLabel();
+				App.frameController.getPropertiesController().refreshPropertiesView();
 			});
 			anchor.setOnMouseDragged(e -> {
 				followMouseDrag(e, anchor);
+				if (State.showDragAnchorPosTips)
+					anchor.refreshTipLabel();
 			});
 			anchor.setOnMouseReleased(e -> {
 				exitMouseDrag(anchor);
+				if (State.showDragAnchorPosTips)
+					anchor.removeTipLabel();
 				App.frameController.getPropertiesController().refreshPropertiesView();
 			});
 		}

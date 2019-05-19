@@ -1,6 +1,7 @@
 package AldebaRain.sketchpad.models.product;
 
 import AldebaRain.sketchpad.App;
+import AldebaRain.sketchpad.State;
 import AldebaRain.sketchpad.manager.PaneManager;
 import AldebaRain.sketchpad.manager.Selector;
 import AldebaRain.sketchpad.models.anchor.AnchorSet;
@@ -34,17 +35,30 @@ public abstract class ANodeWA {
 	/** 原位置 - 图形 */
 	private double originX, originY;
 
-	/** 选中事件 - 根据情况操作图形选择器 */
-	private void addToSelector() {
+	/** 选中事件 - 释放鼠标后根据情况选择图形或取消选择 */
+	private void refreshSelected() {
 		Selector selector = PaneManager.getCurrentPane().getSelector();
-		if (selector.isEmpty())
-			selector.add(this);
-		else {
-			selector.change(this);
+		// 若进行了拖拽，则选择器不发生改变
+		if (State.hasDragged)
+			return;
+		// 若没有拖拽且已选中
+		else if (selector.contains(this)) {
+			// 若是复选状态则取消当前图形的选择
+			if (State.isMultiSelectState)
+				selector.remove(this);
+			// 若是单选状态，若当前只选中一个则取消选择；若当前选中多个则改为仅选择当前图形
+			else if (selector.count() == 1)
+				selector.remove(this);
+			else selector.change(this);
 		}
-		// 刷新属性面板和画布
-		App.frameController.refreshView();
-		App.frameController.getPropertiesController().refreshPropertiesView();
+		// 若没有拖拽且未选中
+		else {
+			// 若是复选状态则添加选择当前图形
+			if (State.isMultiSelectState)
+				selector.add(this);
+			// 若是单选状态则仅选择当前图形
+			else selector.change(this);
+		}
 	}
 	
 	/** 图形拖拽事件- 拖拽前初始化以及图形选定 */
@@ -66,23 +80,27 @@ public abstract class ANodeWA {
 	/** 图形拖拽事件 - 结束拖拽 */
 	private void exitMouseDrag() {
         anchors.setOriginPositions();
-		// 刷新属性面板和画布
-		App.frameController.refreshView();
-		App.frameController.getPropertiesController().refreshPropertiesView();
 	}	
 
 	/** 添加图形拖拽事件 */
 	protected final void addMouseEvent() {
 		node.setOnMousePressed(e -> {
-			addToSelector();
-			App.frameController.getPropertiesController().refreshPropertiesView();
+			State.hasDragged = false;
 			initBeforeDrag(e);
+			// 刷新属性面板和画布
+			App.frameController.refreshView();
+			App.frameController.getPropertiesController().refreshPropertiesView();
 		});
 		node.setOnMouseDragged(e -> {
+			State.hasDragged = true;
 			followMouseDrag(e);
 		});
 		node.setOnMouseReleased(e -> {
 			exitMouseDrag();
+			refreshSelected();
+			State.hasDragged = false;
+			// 刷新属性面板和画布
+			App.frameController.refreshView();
 			App.frameController.getPropertiesController().refreshPropertiesView();
 		});
 	}

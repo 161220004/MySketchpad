@@ -1,6 +1,10 @@
 package AldebaRain.sketchpad.models.anchor;
 
+import AldebaRain.sketchpad.manager.PaneManager;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -22,6 +26,9 @@ public class Anchor extends Rectangle {
 	
 	/** 锚点拖拽前位置 */
 	private double originX, originY;
+
+	/** 标签提示当前锚点位置框，仅鼠标按住时生效 */
+	private Label tipLab;
 	
 	/** 锚点初始化 */
 	public Anchor(AnchorID aid, Node node, double xLength, double yLength) {
@@ -85,6 +92,28 @@ public class Anchor extends Rectangle {
 	/** 从Pane移除锚点 */
 	public void removeFromPane(Pane pane) {
 		pane.getChildren().remove(this);
+	}
+
+	/** 锚点位置标签 - 初始化 */
+	public void initTipLabel() {
+		tipLab = new Label();
+		PaneManager.getCurrentPane().getPane().getChildren().add(tipLab);
+		tipLab.setTranslateX(this.getTranslateX());
+		tipLab.setTranslateY(this.getTranslateY());
+		tipLab.setText("X: " + this.getTranslateX() + ", Y: " + this.getTranslateY());
+		tipLab.setBackground(new Background(new BackgroundFill(Color.rgb(0xF0, 0xF8, 0xFF, 0.5), null, null)));
+	}
+	
+	/** 锚点位置标签 - 移位以及内容变换 */
+	public void refreshTipLabel() {
+		tipLab.setTranslateX(this.getTranslateX());
+		tipLab.setTranslateY(this.getTranslateY());
+		tipLab.setText("X: " + this.getTranslateX() + ", Y: " + this.getTranslateY());
+	}
+
+	/** 锚点位置标签 - 移除 */
+	public void removeTipLabel() {
+		PaneManager.getCurrentPane().getPane().getChildren().remove(tipLab);
 	}
 	
 	/** （Debug使用）获取锚点位置 */

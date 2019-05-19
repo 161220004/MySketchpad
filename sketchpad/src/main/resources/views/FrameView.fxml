@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AldebaRain.sketchpad.controllers.FrameController">
+<BorderPane fx:id="frameWindow" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AldebaRain.sketchpad.controllers.FrameController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -34,10 +34,10 @@
       </MenuBar>
    </top>
    <left>
-      <fx:include fx:id="tools" source="ToolsView.fxml"/> 
+      <fx:include fx:id="tools" source="ToolsView.fxml" /> 
    </left>
    <center>
-      <TabPane fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TabPane fx:id="paneTabManager" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <tabs>
             <Tab fx:id="moreTab" closable="false" text="+">
                <content>
@@ -55,7 +55,7 @@
         <tabs>
             <Tab text="属性">
                <content>
-                  <fx:include fx:id="properties" source="PropertiesView.fxml"/> 
+                  <fx:include fx:id="properties" source="PropertiesView.fxml" /> 
                </content>
             </Tab>
             <Tab text="图形">
