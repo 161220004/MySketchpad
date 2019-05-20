@@ -5,6 +5,7 @@ import java.util.List;
 import AldebaRain.sketchpad.App;
 import AldebaRain.sketchpad.State;
 import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
@@ -54,21 +55,30 @@ public abstract class AnchorSet {
 	protected final void addMouseEvent() {
 		for (Anchor anchor: anchors) {
 			anchor.setOnMousePressed(e -> {
-				initBeforeDrag(e);
-				if (State.showDragAnchorPosTips)
-					anchor.initTipLabel();
-				App.frameController.getPropertiesController().refreshPropertiesView();
+				// 仅鼠标左键拖拽
+				if (e.getButton() == MouseButton.PRIMARY) {
+					initBeforeDrag(e);
+					if (State.showDragAnchorPosTips)
+						anchor.initTipLabel();
+					App.frameController.getPropertiesController().refreshPropertiesView();
+				}
 			});
 			anchor.setOnMouseDragged(e -> {
-				followMouseDrag(e, anchor);
-				if (State.showDragAnchorPosTips)
-					anchor.refreshTipLabel();
+				// 仅鼠标左键拖拽
+				if (e.getButton() == MouseButton.PRIMARY) {
+					followMouseDrag(e, anchor);
+					if (State.showDragAnchorPosTips)
+						anchor.refreshTipLabel();
+				}
 			});
 			anchor.setOnMouseReleased(e -> {
-				exitMouseDrag(anchor);
-				if (State.showDragAnchorPosTips)
-					anchor.removeTipLabel();
-				App.frameController.getPropertiesController().refreshPropertiesView();
+				// 仅鼠标左键拖拽
+				if (e.getButton() == MouseButton.PRIMARY) {
+					exitMouseDrag(anchor);
+					if (State.showDragAnchorPosTips)
+						anchor.removeTipLabel();
+					App.frameController.getPropertiesController().refreshPropertiesView();
+				}
 			});
 		}
 	}
@@ -159,6 +169,7 @@ public abstract class AnchorSet {
 				sign = 0;
 			anchor.setTranslateX(x + sign * halfXLen);
 		}
+		this.setOriginPositions();
 		// 处理图形
 		parentNode.setTranslateX(x);
 	}
@@ -174,6 +185,7 @@ public abstract class AnchorSet {
 				sign = 0;
 			anchor.setTranslateY(y + sign * halfYLen);
 		}
+		this.setOriginPositions();
 		// 处理图形
 		parentNode.setTranslateY(y);
 	}
@@ -188,6 +200,7 @@ public abstract class AnchorSet {
 				sign = 0;
 			anchor.setTranslateX(x + sign * xLen / 2);
 		}
+		this.setOriginPositions();
 		// 处理图形在子类
 	}
 
@@ -201,6 +214,7 @@ public abstract class AnchorSet {
 				sign = 0;
 			anchor.setTranslateY(y + sign * yLen / 2);
 		}
+		this.setOriginPositions();
 		// 处理图形在子类
 	}
 

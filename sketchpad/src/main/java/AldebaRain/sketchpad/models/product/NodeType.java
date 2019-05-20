@@ -5,5 +5,5 @@ package AldebaRain.sketchpad.models.product;
  * 包括：直线，圆形（椭圆），长方形， 三角形，多边形
  * */
 public enum NodeType {
-	Line, Circle, Rectangle, Triangle, Polygon;
+	Line, Ellipse, Rectangle, Triangle, Polygon, Text;
 }

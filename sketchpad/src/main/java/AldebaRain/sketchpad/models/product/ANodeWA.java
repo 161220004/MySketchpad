@@ -6,6 +6,7 @@ import AldebaRain.sketchpad.manager.PaneManager;
 import AldebaRain.sketchpad.manager.Selector;
 import AldebaRain.sketchpad.models.anchor.AnchorSet;
 import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -36,7 +37,7 @@ public abstract class ANodeWA {
 	private double originX, originY;
 
 	/** 选中事件 - 释放鼠标后根据情况选择图形或取消选择 */
-	private void refreshSelected() {
+	protected void refreshSelected(MouseEvent e) {
 		Selector selector = PaneManager.getCurrentPane().getSelector();
 		// 若进行了拖拽，则选择器不发生改变
 		if (State.hasDragged)
@@ -44,7 +45,7 @@ public abstract class ANodeWA {
 		// 若没有拖拽且已选中
 		else if (selector.contains(this)) {
 			// 若是复选状态则取消当前图形的选择
-			if (State.isMultiSelectState)
+			if (e.isControlDown())
 				selector.remove(this);
 			// 若是单选状态，若当前只选中一个则取消选择；若当前选中多个则改为仅选择当前图形
 			else if (selector.count() == 1)
@@ -54,7 +55,7 @@ public abstract class ANodeWA {
 		// 若没有拖拽且未选中
 		else {
 			// 若是复选状态则添加选择当前图形
-			if (State.isMultiSelectState)
+			if (e.isControlDown())
 				selector.add(this);
 			// 若是单选状态则仅选择当前图形
 			else selector.change(this);
@@ -62,7 +63,7 @@ public abstract class ANodeWA {
 	}
 	
 	/** 图形拖拽事件- 拖拽前初始化以及图形选定 */
-	private void initBeforeDrag(MouseEvent e) {
+	protected void initBeforeDrag(MouseEvent e) {
     	originMouseX = e.getSceneX();
         originMouseY = e.getSceneY();
         originX = anchors.getTranslateX();
@@ -70,7 +71,7 @@ public abstract class ANodeWA {
 	}
 
 	/** 图形拖拽事件 - 正在拖拽 */
-	private void followMouseDrag(MouseEvent e) {
+	protected void followMouseDrag(MouseEvent e) {
     	double dx = e.getSceneX() - originMouseX;
         double dy = e.getSceneY() - originMouseY;
         this.setTranslateX(dx + originX);
@@ -78,30 +79,39 @@ public abstract class ANodeWA {
 	}
 
 	/** 图形拖拽事件 - 结束拖拽 */
-	private void exitMouseDrag() {
+	protected void exitMouseDrag() {
         anchors.setOriginPositions();
 	}	
 
 	/** 添加图形拖拽事件 */
-	protected final void addMouseEvent() {
+	protected void addMouseEvent() {
 		node.setOnMousePressed(e -> {
-			State.hasDragged = false;
-			initBeforeDrag(e);
-			// 刷新属性面板和画布
-			App.frameController.refreshView();
-			App.frameController.getPropertiesController().refreshPropertiesView();
+			// 仅鼠标左键拖拽
+			if (e.getButton() == MouseButton.PRIMARY) {
+				State.hasDragged = false;
+				initBeforeDrag(e);
+				// 刷新属性面板和画布
+				App.frameController.refreshView();
+				App.frameController.getPropertiesController().refreshPropertiesView();
+			}
 		});
 		node.setOnMouseDragged(e -> {
-			State.hasDragged = true;
-			followMouseDrag(e);
+			// 仅鼠标左键拖拽
+			if (e.getButton() == MouseButton.PRIMARY) {
+				State.hasDragged = true;
+				followMouseDrag(e);
+			}
 		});
 		node.setOnMouseReleased(e -> {
-			exitMouseDrag();
-			refreshSelected();
-			State.hasDragged = false;
-			// 刷新属性面板和画布
-			App.frameController.refreshView();
-			App.frameController.getPropertiesController().refreshPropertiesView();
+			// 仅鼠标左键拖拽
+			if (e.getButton() == MouseButton.PRIMARY) {
+				exitMouseDrag();
+				refreshSelected(e);
+				State.hasDragged = false;
+				// 刷新属性面板和画布
+				App.frameController.refreshView();
+				App.frameController.getPropertiesController().refreshPropertiesView();
+			}
 		});
 	}
 
@@ -156,16 +166,24 @@ public abstract class ANodeWA {
 	}
 
 	/** 适配函数 - 获取图形X方向长度 */
-	public abstract double getLengthX();
+	public double getLengthX() {
+		return anchors.getLengthX();
+	}
 
 	/** 适配函数 - 重设图形X方向长度 */
-	public abstract void setLengthX(double xLen);
+	public void setLengthX(double xLen) {
+		anchors.setLengthX(xLen);
+	}
 
 	/** 适配函数 - 获取图形Y方向长度 */
-	public abstract double getLengthY();
+	public double getLengthY() {
+		return anchors.getLengthY();
+	}
 
 	/** 适配函数 - 重设图形Y方向长度 */
-	public abstract void setLengthY(double yLen);
+	public void setLengthY(double yLen) {
+		anchors.setLengthY(yLen);
+	}
 
 	/** 适配函数 - 获取图形边框宽度 */
 	public abstract double getStrokeWidth();

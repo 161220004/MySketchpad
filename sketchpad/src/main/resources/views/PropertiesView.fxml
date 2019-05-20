@@ -13,7 +13,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="discLab" layoutX="55.0" layoutY="14.0" prefHeight="30.0" text="图形" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
+                        <Label fx:id="descLab" layoutX="55.0" layoutY="14.0" prefHeight="30.0" text="图形" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </content>
@@ -54,8 +54,10 @@
                      <children>
                         <Label fx:id="colorFillLab" layoutX="14.0" layoutY="14.0" prefHeight="30.0" text="Fill:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="30.0" />
                         <Label layoutX="24.0" layoutY="24.0" prefHeight="30.0" text="Stroke:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="0.0" />
+                        <Label fx:id="colorTextLab" layoutX="24.0" layoutY="24.0" prefHeight="30.0" text="Text:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="60.0" />
                         <ColorPicker fx:id="colorFillPicker" layoutX="86.0" layoutY="12.0" prefHeight="30.0" prefWidth="100.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="30.0" />
                         <ColorPicker fx:id="colorStrokePicker" layoutX="84.0" layoutY="42.0" prefHeight="30.0" prefWidth="100.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
+                        <ColorPicker fx:id="colorTextPicker" layoutX="96.0" layoutY="22.0" prefHeight="30.0" prefWidth="100.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="60.0" />
                      </children>
                   </AnchorPane>
                </content>

@@ -129,7 +129,6 @@ public class AnchorLineSet extends AnchorSet {
 		parentLine.setStartX(this.getAnchor(AnchorID.LU).getTranslateX());
 		parentLine.setEndX(this.getAnchor(AnchorID.RD).getTranslateX());
 		// 重新初始化拖拽前变量
-		this.setOriginPositions();
 		xStartBefore = parentLine.getStartX();
 		xEndBefore = parentLine.getEndX();
 	}
@@ -141,7 +140,6 @@ public class AnchorLineSet extends AnchorSet {
 		parentLine.setStartY(this.getAnchor(AnchorID.LU).getTranslateY());
 		parentLine.setEndY(this.getAnchor(AnchorID.RD).getTranslateY());
 		// 重新初始化拖拽前变量
-		this.setOriginPositions();
 		yStartBefore = parentLine.getStartY();
 		yEndBefore = parentLine.getEndY();
 	}
@@ -153,7 +151,6 @@ public class AnchorLineSet extends AnchorSet {
 		parentLine.setStartX(this.getAnchor(AnchorID.LU).getTranslateX());
 		parentLine.setEndX(this.getAnchor(AnchorID.RD).getTranslateX());
 		// 重新初始化拖拽前变量
-		this.setOriginPositions();
 		xStartBefore = parentLine.getStartX();
 		xEndBefore = parentLine.getEndX();
 	}
@@ -165,7 +162,6 @@ public class AnchorLineSet extends AnchorSet {
 		parentLine.setStartY(this.getAnchor(AnchorID.LU).getTranslateY());
 		parentLine.setEndY(this.getAnchor(AnchorID.RD).getTranslateY());
 		// 重新初始化拖拽前变量
-		this.setOriginPositions();
 		yStartBefore = parentLine.getStartY();
 		yEndBefore = parentLine.getEndY();
 	}
@@ -176,11 +172,11 @@ public class AnchorLineSet extends AnchorSet {
 		double xEnd = this.getAnchor(AnchorID.RD).getTranslateX();
 		this.getAnchor(AnchorID.LU).setTranslateX(xStart);
 		this.getAnchor(AnchorID.C).setTranslateX((xStart + xEnd) / 2);
+		this.setOriginPositions();
 		// 处理图形
 		parentLine.setTranslateX((xStart + xEnd) / 2);
 		parentLine.setStartX(xStart);
 		// 重新初始化拖拽前变量
-		this.setOriginPositions();
 		xStartBefore = parentLine.getStartX();
 		xEndBefore = parentLine.getEndX();
 	}
@@ -191,11 +187,11 @@ public class AnchorLineSet extends AnchorSet {
 		double yEnd = this.getAnchor(AnchorID.RD).getTranslateY();
 		this.getAnchor(AnchorID.LU).setTranslateY(yStart);
 		this.getAnchor(AnchorID.C).setTranslateY((yStart + yEnd) / 2);
+		this.setOriginPositions();
 		// 处理图形
 		parentLine.setTranslateY((yStart + yEnd) / 2);
 		parentLine.setStartY(yStart);
 		// 重新初始化拖拽前变量
-		this.setOriginPositions();
 		yStartBefore = parentLine.getStartY();
 		yEndBefore = parentLine.getEndY();
 	}
@@ -206,11 +202,11 @@ public class AnchorLineSet extends AnchorSet {
 		double xStart = this.getAnchor(AnchorID.LU).getTranslateX();
 		this.getAnchor(AnchorID.RD).setTranslateX(xEnd);
 		this.getAnchor(AnchorID.C).setTranslateX((xStart + xEnd) / 2);
+		this.setOriginPositions();
 		// 处理图形
 		parentLine.setTranslateX((xStart + xEnd) / 2);
 		parentLine.setEndX(xEnd);
 		// 重新初始化拖拽前变量
-		this.setOriginPositions();
 		xStartBefore = parentLine.getStartX();
 		xEndBefore = parentLine.getEndX();
 	}
@@ -221,11 +217,11 @@ public class AnchorLineSet extends AnchorSet {
 		double yStart = this.getAnchor(AnchorID.LU).getTranslateY();
 		this.getAnchor(AnchorID.RD).setTranslateY(yEnd);
 		this.getAnchor(AnchorID.C).setTranslateY((yStart + yEnd) / 2);
+		this.setOriginPositions();
 		// 处理图形
 		parentLine.setTranslateY((yStart + yEnd) / 2);
 		parentLine.setEndY(yEnd);
 		// 重新初始化拖拽前变量
-		this.setOriginPositions();
 		yStartBefore = parentLine.getStartY();
 		yEndBefore = parentLine.getEndY();
 	}

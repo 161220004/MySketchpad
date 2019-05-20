@@ -3,7 +3,6 @@ package AldebaRain.sketchpad.controllers;
 import java.util.Iterator;
 import java.util.List;
 
-import AldebaRain.sketchpad.State;
 import AldebaRain.sketchpad.manager.*;
 import AldebaRain.sketchpad.models.product.ANodeWA;
 import javafx.fxml.FXML;
@@ -81,16 +80,7 @@ public class FrameController {
         		else if (e.getCode() == KeyCode.V) {
         			Clipboard.getInstance().paste();
         		}
-        		// 图形复选(Ctrl)
-        		else {
-    				State.isMultiSelectState = true;
-				}
     		}
-    	});
-    	frameWindow.setOnKeyReleased(e -> {
-			if (!e.isControlDown()) {
-				State.isMultiSelectState = false;
-			}
     	});
     	
     	// 为添加画布标签添加动作

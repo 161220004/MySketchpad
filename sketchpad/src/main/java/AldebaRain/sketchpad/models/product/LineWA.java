@@ -22,22 +22,6 @@ public class LineWA extends ANodeWA {
 		this.addMouseEvent();
 	}
 
-	/** 构造函数B（危险） - 当Line形状未知时调用 */
-	@Deprecated
-	public LineWA(Line line, double xStart, double yStart, double xEnd, double yEnd) {
-		line.setTranslateX((xStart + xEnd) / 2);
-		line.setTranslateY((yStart + yEnd) / 2);
-		line.setStartX(xStart);
-		line.setStartY(yStart);
-		line.setEndX(xEnd);
-		line.setEndY(yEnd);
-		this.type = NodeType.Line;
-		this.node = line;
-		this.anchors = new AnchorLineSet(line, xStart, yStart, xEnd, yEnd);
-		this.anchors.hide();
-		this.addMouseEvent();
-	}
-	
 	@Override
 	public String getDescription() {
 		return new String("直线");
@@ -61,16 +45,6 @@ public class LineWA extends ANodeWA {
 	/** 获取End端点，即直线初始化时RD锚点的X坐标 */
 	public double getEndX() {
 		return anchors.getAnchor(AnchorID.RD).getTranslateX();
-	}
-
-	@Override
-	public double getLengthX() {
-		return Math.abs(((Line)node).getEndX() - ((Line)node).getStartX());
-	}
-
-	@Override
-	public double getLengthY() {
-		return Math.abs(((Line)node).getEndY() - ((Line)node).getStartY());
 	}
 
 	@Override
@@ -109,16 +83,6 @@ public class LineWA extends ANodeWA {
 	}
 
 	@Override
-	public void setLengthX(double xLen) {
-		anchors.setLengthX(xLen);
-	}
-
-	@Override
-	public void setLengthY(double yLen) {
-		anchors.setLengthY(yLen);
-	}
-
-	@Override
 	public void setStrokeWidth(double width) {
 		((Line)node).setStrokeWidth(width);
 	}
@@ -134,7 +98,8 @@ public class LineWA extends ANodeWA {
 	}
 
 	/** 克隆一个Line类型 */
-	private Line cloneLine(Line line) {
+	private Line cloneLine() {
+		Line line = (Line)node;
 		Line newLine = new Line();
 		// 少量偏移
 		newLine.setStartX(line.getStartX() + Default.pasteBiasX);
@@ -150,7 +115,7 @@ public class LineWA extends ANodeWA {
 	
 	@Override
 	public ANodeWA clone() {
-		Line line = cloneLine((Line)node);
+		Line line = cloneLine();
 		LineWA lineWA = new LineWA(line);
 		return lineWA;
 	}

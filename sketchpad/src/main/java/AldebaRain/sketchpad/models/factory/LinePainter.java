@@ -1,5 +1,6 @@
 package AldebaRain.sketchpad.models.factory;
 
+import AldebaRain.sketchpad.Default;
 import AldebaRain.sketchpad.manager.PaneManager;
 import AldebaRain.sketchpad.models.product.*;
 import javafx.scene.shape.Line;
@@ -20,7 +21,7 @@ public class LinePainter implements IPainter {
 		line.setStartY(yStart);
 		line.setEndX(xEnd);
 		line.setEndY(yEnd);
-		line.setStrokeWidth(3);
+		line.setStrokeWidth(Default.lineStrokeW);
 		return line;
 	}
 	

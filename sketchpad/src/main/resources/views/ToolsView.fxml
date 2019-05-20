@@ -10,10 +10,11 @@
       <ToolBar layoutX="10.0" layoutY="10.0" orientation="VERTICAL" prefHeight="878.0" prefWidth="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
             <Button fx:id="lineToolBtn" mnemonicParsing="false" onAction="#onClickLineTool" />
-            <Button fx:id="ovalToolBtn" mnemonicParsing="false" onAction="#onClickOvalTool" />
+            <Button fx:id="ellipseToolBtn" mnemonicParsing="false" onAction="#onClickEllipseTool" />
             <Button fx:id="rectToolBtn" mnemonicParsing="false" onAction="#onClickRectTool" />
             <Button fx:id="triToolBtn" mnemonicParsing="false" onAction="#onClickTriTool" />
             <Button fx:id="polyToolBtn" mnemonicParsing="false" onAction="#onClickPolyTool" />
+            <Button fx:id="textToolBtn" mnemonicParsing="false" onAction="#onClickTextTool" />
          </items>
       </ToolBar>
    </children>

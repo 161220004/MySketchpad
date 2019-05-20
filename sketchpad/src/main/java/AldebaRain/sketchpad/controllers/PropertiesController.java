@@ -2,11 +2,8 @@ package AldebaRain.sketchpad.controllers;
 
 import java.util.Comparator;
 
-import AldebaRain.sketchpad.manager.PaneManager;
-import AldebaRain.sketchpad.manager.Selector;
-import AldebaRain.sketchpad.models.product.ANodeWA;
-import AldebaRain.sketchpad.models.product.LineWA;
-import AldebaRain.sketchpad.models.product.NodeType;
+import AldebaRain.sketchpad.manager.*;
+import AldebaRain.sketchpad.models.product.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,7 +27,7 @@ public class PropertiesController {
 
 	/** 属性面板 - 类型描述Ttp - 标签 */
 	@FXML
-	private Label discLab;
+	private Label descLab;
 
 	/** 属性面板 - 位置Ttp - 图形X坐标/直线StartX坐标标签 */
 	@FXML
@@ -88,6 +85,14 @@ public class PropertiesController {
 	@FXML
 	private ColorPicker colorFillPicker;
 
+	/** 属性面板 - 颜色Ttp - 文本颜色标签 */
+	@FXML
+	private Label colorTextLab;
+
+	/** 属性面板 - 颜色Ttp - 文本颜色 */
+	@FXML
+	private ColorPicker colorTextPicker;
+
 	/** 自动初始化调用 */
     @FXML
     private void initialize() {
@@ -124,6 +129,7 @@ public class PropertiesController {
     	sizeStrokeField.focusedProperty().addListener(listener -> { onSizeStrokeInputChanged(); });
     	colorFillPicker.setOnAction(e -> { onColorFillInputChanged(); });
     	colorStrokePicker.setOnAction(e -> { onColorStrokeInputChanged(); });
+    	colorTextPicker.setOnAction(e -> { onColorTextInputChanged(); });
     }
 
 	/** 根据选中的图形，刷新属性界面的方法 */
@@ -145,7 +151,7 @@ public class PropertiesController {
     
     /** 设置类型描述属性 */
     private void setDescription(ANodeWA node) {
-    	discLab.setText(node.getDescription());
+    	descLab.setText(node.getDescription());
     }
 
     /** 设置位置属性 */
@@ -185,14 +191,27 @@ public class PropertiesController {
 
     /** 设置颜色属性 */
     private void setColor(ANodeWA node) {
-    	colorFillPicker.setValue(node.getFill());
     	colorStrokePicker.setValue(node.getStroke());
     	if (node.getType() == NodeType.Line) {
     		colorFillLab.setVisible(false);
     		colorFillPicker.setVisible(false);
-    	} else {
+    		colorTextLab.setVisible(false);
+    		colorTextPicker.setVisible(false);
+    	} 
+    	else if (node.getType() == NodeType.Text) {
     		colorFillLab.setVisible(true);
     		colorFillPicker.setVisible(true);
+        	colorFillPicker.setValue(node.getFill());
+    		colorTextLab.setVisible(true);
+    		colorTextPicker.setVisible(true);
+        	colorTextPicker.setValue((Color)((TextWA)node).getLabel().getTextFill());
+    	}
+    	else {
+    		colorFillLab.setVisible(true);
+    		colorFillPicker.setVisible(true);
+        	colorFillPicker.setValue(node.getFill());
+    		colorTextLab.setVisible(false);
+    		colorTextPicker.setVisible(false);
     	}
     }
 
@@ -211,6 +230,8 @@ public class PropertiesController {
     				node.setTranslateX(x);
     		}
     	}
+		// 刷新属性面板
+    	this.refreshPropertiesView();
     }    
     
     /** 属性输入 - 输入y坐标 */
@@ -228,6 +249,8 @@ public class PropertiesController {
     				node.setTranslateY(y);
     		}
     	}    	
+		// 刷新属性面板
+    	this.refreshPropertiesView();
     }    
 
     /** 属性输入 - 输入坐标xEnd */
@@ -241,6 +264,8 @@ public class PropertiesController {
     		if (node.getType() == NodeType.Line && xEnd != null) 
 				((LineWA)node).setEndX(xEnd);
     	}
+		// 刷新属性面板
+    	this.refreshPropertiesView();
     }    
 
     /** 属性输入 - 输入坐标yEnd */
@@ -254,6 +279,8 @@ public class PropertiesController {
     		if (node.getType() == NodeType.Line && yEnd != null) 
 				((LineWA)node).setEndY(yEnd);
     	}
+		// 刷新属性面板
+    	this.refreshPropertiesView();
     }    
 
     /** 属性输入 - 输入x方向长度 */
@@ -267,6 +294,8 @@ public class PropertiesController {
     		if (xLen != null) 
 				node.setLengthX(xLen);
     	}
+		// 刷新属性面板
+    	this.refreshPropertiesView();
     }    
 
     /** 属性输入 - 输入y方向长度 */
@@ -280,6 +309,8 @@ public class PropertiesController {
     		if (yLen != null) 
 				node.setLengthY(yLen);
     	}
+		// 刷新属性面板
+    	this.refreshPropertiesView();
     }    
 
     /** 属性输入 - 输入边框宽度 */
@@ -293,6 +324,8 @@ public class PropertiesController {
     		if (width != null) 
 				node.setStrokeWidth(width);
     	}
+		// 刷新属性面板
+    	this.refreshPropertiesView();
     }    
     
     /** 属性输入 - 输入填充颜色 */
@@ -305,6 +338,8 @@ public class PropertiesController {
     		Color fill = colorFillPicker.getValue();
 			node.setFill(fill);
     	}
+		// 刷新属性面板
+    	this.refreshPropertiesView();
     }
 
     /** 属性输入 - 输入边框颜色 */
@@ -317,6 +352,22 @@ public class PropertiesController {
     		Color color = colorStrokePicker.getValue();
 			node.setStroke(color);
     	}
+		// 刷新属性面板
+    	this.refreshPropertiesView();
+    }
+    
+    /** 属性输入 - 输入文本颜色 */
+    private void onColorTextInputChanged() {
+    	// 获取当前画布的图形选择器
+    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	// 若选中一个对象则对其进行更改
+    	if (selector.count() == 1) {
+    		ANodeWA node = selector.getList().get(0);
+    		Color color = colorTextPicker.getValue();
+			((TextWA)node).getLabel().setTextFill(color);
+    	}
+		// 刷新属性面板
+    	this.refreshPropertiesView();
     }
     
 }

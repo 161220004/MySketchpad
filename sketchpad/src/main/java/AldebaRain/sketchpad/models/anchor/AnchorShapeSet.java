@@ -11,24 +11,17 @@ import javafx.scene.shape.Shape;
  * 
  * @see AnchorSet
  */
-public class AnchorShapeSet extends AnchorSet {
+public abstract class AnchorShapeSet extends AnchorSet {
 
-	/** 锚点所在图形 */
-	private Shape parentShape;
-	/** 锚点所在图形 - 最初大小<br>
-	 * 无论如何伸缩，只有最初构造时的长才是其最初大小 */
-	private final double xLengthOrigin, yLengthOrigin;
 	/** 锚点所在图形 - 拖拽前大小 */
 	private double xLengthBefore, yLengthBefore;
+	
 	/** 锚点所在图形 - 拖拽时大小 */
 	private double xLengthDrag, yLengthDrag;
 
 	/** 构造函数A - 当Shape形状已确认时调用 */
-	public AnchorShapeSet(Shape node, double xOrigin, double yOrigin, double xLength, double yLength) {
+	protected AnchorShapeSet(Shape node, double xLength, double yLength) {
 		parentNode = node;
-		parentShape = (Shape)parentNode;
-		xLengthOrigin = xOrigin;
-		yLengthOrigin = yOrigin;
 		xLengthBefore = xLength;
 		yLengthBefore = yLength;
 		anchors = new ArrayList<>();
@@ -38,13 +31,10 @@ public class AnchorShapeSet extends AnchorSet {
 
 	/** 构造函数B（危险） - 当Shape形状未知时调用 */
 	@Deprecated
-	public AnchorShapeSet(Shape node, double xOrigin, double yOrigin, double xLength, double yLength, double x, double y) {
+	protected AnchorShapeSet(Shape node, double xLength, double yLength, double x, double y) {
 		parentNode = node;
 		parentNode.setTranslateX(x);
 		parentNode.setTranslateY(y);
-		parentShape = (Shape)parentNode;
-		xLengthOrigin = xOrigin;
-		yLengthOrigin = yOrigin;
 		xLengthBefore = xLength;
 		yLengthBefore = yLength;
 		anchors = new ArrayList<>();
@@ -124,12 +114,12 @@ public class AnchorShapeSet extends AnchorSet {
 			other.setTranslateY(ty + other.getOriginY());
 		}
 		// 图形位移和变换
-        parentShape.setTranslateX(dx / 2 + oxParent);
-        parentShape.setTranslateY(dy / 2 + oyParent);
+        ((Shape)parentNode).setTranslateX(dx / 2 + oxParent);
+        ((Shape)parentNode).setTranslateY(dy / 2 + oyParent);
         xLengthDrag = xLengthBefore + dx * movId.getXDir();
         yLengthDrag = yLengthBefore + dy * movId.getYDir();
-        parentShape.setScaleX(xLengthDrag / xLengthOrigin);
-        parentShape.setScaleY(yLengthDrag / yLengthOrigin);
+        // 接下来在子类的继承重写中重设图形的xLength，yLength
+        this.resizeShape();
     }
 
 	/** 锚点拖拽事件 - 结束拖拽 */
@@ -140,32 +130,19 @@ public class AnchorShapeSet extends AnchorSet {
     	yLengthBefore = yLengthDrag;
     }
 
-	@Override
-	public void setTranslateX(double x) {
-		super.setTranslateX(x);
-		this.setOriginPositions();
-	}
-	
-	@Override
-	public void setTranslateY(double y) {
-		super.setTranslateY(y);
-		this.setOriginPositions();
-	}
+	/** 锚点拖拽事件 - 重设图形的xLength，yLength */
+	protected abstract void resizeShape();
 	
 	@Override
 	public void setLengthX(double xLen) {
 		super.setLengthX(xLen);
-		parentShape.setScaleX(xLen / xLengthOrigin);
-		this.setOriginPositions();
-    	xLengthBefore = xLen;
+		this.resizeShape();
 	}
 	
 	@Override
 	public void setLengthY(double yLen) {
 		super.setLengthY(yLen);
-		parentShape.setScaleY(yLen / yLengthOrigin);
-		this.setOriginPositions();
-    	yLengthBefore = yLen;
+		this.resizeShape();
 	}
 	
 }

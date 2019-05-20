@@ -20,7 +20,7 @@ public class ToolsController {
 
 	/** 工具箱 - 椭圆绘制 */
 	@FXML
-	private Button ovalToolBtn;
+	private Button ellipseToolBtn;
 
 	/** 工具箱 - 长方形绘制 */
 	@FXML
@@ -34,6 +34,10 @@ public class ToolsController {
 	@FXML
 	private Button polyToolBtn;
 
+	/** 工具箱 - 描述文本框绘制 */
+	@FXML
+	private Button textToolBtn;
+
 	/** 自动初始化调用 */
     @FXML
     private void initialize() {
@@ -41,14 +45,16 @@ public class ToolsController {
     	// 为工具栏按钮添加图标
     	Image lineImg = new Image(getClass().getClassLoader().getResourceAsStream("img/line_icon.png"));
     	lineToolBtn.setGraphic(new ImageView(lineImg));
-    	Image ovalImg = new Image(getClass().getClassLoader().getResourceAsStream("img/oval_icon.png"));
-    	ovalToolBtn.setGraphic(new ImageView(ovalImg));
+    	Image ovalImg = new Image(getClass().getClassLoader().getResourceAsStream("img/elli_icon.png"));
+    	ellipseToolBtn.setGraphic(new ImageView(ovalImg));
     	Image rectImg = new Image(getClass().getClassLoader().getResourceAsStream("img/rect_icon.png"));
     	rectToolBtn.setGraphic(new ImageView(rectImg));
     	Image triImg = new Image(getClass().getClassLoader().getResourceAsStream("img/tri_icon.png"));
     	triToolBtn.setGraphic(new ImageView(triImg));
     	Image polyImg = new Image(getClass().getClassLoader().getResourceAsStream("img/poly_icon.png"));
     	polyToolBtn.setGraphic(new ImageView(polyImg));
+    	Image textImg  = new Image(getClass().getClassLoader().getResourceAsStream("img/text_icon.png"));
+    	textToolBtn.setGraphic(new ImageView(textImg));
     	
     }
 
@@ -61,15 +67,16 @@ public class ToolsController {
 
     /** 点击椭圆工具触发 */
     @FXML
-    private void onClickOvalTool() {
-    	IPainter circlePainter = new CirclePainter();
-    	circlePainter.paint(Default.circleOX, Default.circleOY, 2 * Default.circleRadius, 2 * Default.circleRadius);
+    private void onClickEllipseTool() {
+    	IPainter ellipsePainter = new EllipsePainter();
+    	ellipsePainter.paint(Default.shapeOX, Default.shapeOY, 2 * Default.circleRadius, 2 * Default.circleRadius);
     }
 
     /** 点击长方形工具触发 */
     @FXML
     private void onClickRectTool() {
-    	
+    	IPainter rectPainter = new RectanglePainter();
+    	rectPainter.paint(Default.shapeOX, Default.shapeOY, Default.rectLengthX, Default.rectLengthY);
     }
 
     /** 点击三角形工具触发 */
@@ -82,6 +89,13 @@ public class ToolsController {
     @FXML
     private void onClickPolyTool() {
     	
+    }
+
+    /** 点击描述文本工具触发 */
+    @FXML
+    private void onClickTextTool() {
+    	IPainter textPainter = new TextPainter();
+    	textPainter.paint(Default.shapeOX, Default.shapeOY, Default.textLabelLenX, Default.textLabelLenY);
     }
 
 }
