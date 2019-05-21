@@ -29,21 +29,7 @@ public abstract class AnchorShapeSet extends AnchorSet {
 		addMouseEvent();
 	}
 
-	/** 构造函数B（危险） - 当Shape形状未知时调用 */
-	@Deprecated
-	protected AnchorShapeSet(Shape node, double xLength, double yLength, double x, double y) {
-		parentNode = node;
-		parentNode.setTranslateX(x);
-		parentNode.setTranslateY(y);
-		xLengthBefore = xLength;
-		yLengthBefore = yLength;
-		anchors = new ArrayList<>();
-		addAnchors(node, xLength, yLength);
-		addMouseEvent();
-	}
-
 	/** 构造函数初始化 - 添加锚点 */
-	@Override
 	protected void addAnchors(Node node, double xLength, double yLength) {
 		anchors.add(new Anchor(AnchorID.C, node, xLength, yLength));
 		anchors.add(new Anchor(AnchorID.L, node, xLength, yLength));

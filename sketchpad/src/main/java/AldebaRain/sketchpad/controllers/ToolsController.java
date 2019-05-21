@@ -88,7 +88,8 @@ public class ToolsController {
     /** 点击多边形工具触发 */
     @FXML
     private void onClickPolyTool() {
-    	
+    	IPainter polyPainter = new PolygonPainter();
+    	polyPainter.paint(Default.shapeOX, Default.shapeOY, Default.polygonVergeNum, Default.polygonRadius);
     }
 
     /** 点击描述文本工具触发 */

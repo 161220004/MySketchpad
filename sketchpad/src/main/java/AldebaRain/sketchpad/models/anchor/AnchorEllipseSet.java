@@ -9,12 +9,6 @@ public class AnchorEllipseSet extends AnchorShapeSet {
 		super(ellipse, 2 * ellipse.getRadiusX(), 2 * ellipse.getRadiusY());
 	}
 
-	/** 构造函数B（危险） - 当Ellipse形状未知时调用 */
-	@Deprecated
-	public AnchorEllipseSet(Ellipse ellipse, double xLength, double yLength, double x, double y) {
-		super(ellipse, xLength, yLength, x, y);
-	}
-
 	/** 根据已经设好的锚点重设图形大小 */
 	@Override
 	protected void resizeShape() {

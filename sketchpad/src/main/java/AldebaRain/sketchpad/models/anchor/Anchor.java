@@ -24,6 +24,9 @@ public class Anchor extends Rectangle {
 	/** 锚点位置标识 - 边锚点L/R/U/D（仅水平/仅竖直）、角锚点（LU/LD/RU/RD）、中心锚点C（不能拖拽） */
 	private final AnchorID anchorId;
 	
+	/** 锚点Index标识（用于多边形） */
+	private final int index;
+	
 	/** 锚点拖拽前位置 */
 	private double originX, originY;
 
@@ -42,18 +45,37 @@ public class Anchor extends Rectangle {
     	double dy = yLength / 2 * aid.getYDir();
 		this.setTranslateX(node.getTranslateX() + dx);
 		this.setTranslateY(node.getTranslateY() + dy);
-		
     	// Id等初始化
 		anchorId = aid;
+		index = 0;
 		setOriginX(this.getTranslateX());
 		setOriginY(this.getTranslateY());
 	}
 
+	/** 锚点初始化（用于多边形） */
+	public Anchor(double x, double y, int id) {
+		super(length, length);
+    	this.setFill(Color.TRANSPARENT);
+    	this.setStroke(Color.LIGHTGRAY);
+    	this.setStrokeWidth(strokeWidth);
+		this.setTranslateX(x);
+		this.setTranslateY(y);
+		anchorId = AnchorID.C;
+		this.index = id;
+		setOriginX(this.getTranslateX());
+		setOriginY(this.getTranslateY());
+	}
+	
 	/** 获取锚点位置标识 */
 	public AnchorID getAnchorId() {
 		return anchorId;
 	}
 
+	/** 获取锚点Index */
+	public int getIndex() {
+		return index;
+	}
+	
 	/** 获取锚点拖拽前位置 - X */
 	public double getOriginX() {
 		return originX;

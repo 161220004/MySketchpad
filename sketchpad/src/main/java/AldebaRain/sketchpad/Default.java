@@ -51,4 +51,10 @@ public class Default {
 	/** 文本描述框，四周空白区 */
 	public static final double textLabelMargin = 10;
 	
+	/** 多边形默认边数 */
+	public static final double polygonVergeNum = 6;
+
+	/** 多边形默认边长 */
+	public static final double polygonRadius = 60;
+	
 }

@@ -58,7 +58,6 @@ public class AnchorLineSet extends AnchorSet {
 	}
 
 	/** 构造函数初始化 - 添加锚点 */
-	@Override
 	protected void addAnchors(Node node, double xLength, double yLength) {
 		anchors.add(new Anchor(AnchorID.C, node, xLength, yLength));
 		anchors.add(new Anchor(AnchorID.LU, node, xLength, yLength));

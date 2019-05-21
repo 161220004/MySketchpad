@@ -61,9 +61,17 @@ public class PropertiesController {
 	@FXML
 	private TextField posYEndField;
 
+	/** 属性面板 - 大小Ttp - 图形/直线在X方向的长的标签 */
+	@FXML
+	private Label sizeXLab;
+
 	/** 属性面板 - 大小Ttp - 图形/直线在X方向的长 */
 	@FXML
 	private TextField sizeXField;
+
+	/** 属性面板 - 大小Ttp - 图形/直线在Y方向的长的标签 */
+	@FXML
+	private Label sizeYLab;
 
 	/** 属性面板 - 大小Ttp - 图形/直线在Y方向的长 */
 	@FXML
@@ -184,9 +192,22 @@ public class PropertiesController {
 
     /** 设置大小属性 */
     private void setSize(ANodeWA node) {
-    	sizeXField.setText(String.valueOf(node.getLengthX()));
-    	sizeYField.setText(String.valueOf(node.getLengthY()));
-    	sizeStrokeField.setText(String.valueOf(node.getStrokeWidth()));
+    	if (node.getType() == NodeType.Polygon) {
+    		// 只有外接圆半径以及边框宽度
+    		sizeXLab.setText("R:");
+        	sizeXField.setText(String.valueOf(((PolygonWA)node).getRadius()));
+        	sizeYLab.setText("(R为正多边形外接圆半径)");
+        	sizeYField.setVisible(false);
+        	sizeStrokeField.setText(String.valueOf(node.getStrokeWidth()));
+    	}
+    	else {
+    		sizeXLab.setText("X:");
+        	sizeXField.setText(String.valueOf(node.getLengthX()));
+        	sizeYLab.setText("Y:");
+        	sizeYField.setVisible(true);
+        	sizeYField.setText(String.valueOf(node.getLengthY()));
+        	sizeStrokeField.setText(String.valueOf(node.getStrokeWidth()));
+    	}
     }
 
     /** 设置颜色属性 */
@@ -283,7 +304,7 @@ public class PropertiesController {
     	this.refreshPropertiesView();
     }    
 
-    /** 属性输入 - 输入x方向长度 */
+    /** 属性输入 - 输入x方向长度或多边形外接圆半径 */
     private void onSizeXLenInputChanged() {
     	// 获取当前画布的图形选择器
     	Selector selector = PaneManager.getCurrentPane().getSelector();
@@ -291,8 +312,12 @@ public class PropertiesController {
     	if (selector.count() == 1) {
     		ANodeWA node = selector.getList().get(0);
     		Double xLen = Double.valueOf(sizeXField.getText());
-    		if (xLen != null) 
-				node.setLengthX(xLen);
+    		if (xLen != null) {
+        		if (node.getType() == NodeType.Polygon)
+        			((PolygonWA)node).setRadius(xLen);
+        		else
+        			node.setLengthX(xLen);
+    		}
     	}
 		// 刷新属性面板
     	this.refreshPropertiesView();

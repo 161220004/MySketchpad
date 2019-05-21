@@ -1,0 +1,61 @@
+package AldebaRain.sketchpad.models.product;
+
+import AldebaRain.sketchpad.Default;
+import AldebaRain.sketchpad.models.anchor.AnchorPolygonSet;
+import javafx.scene.shape.Polygon;
+
+/** 
+ * 锚点多边形类(Polygon With Anchors).<br> 
+ * 是工厂模式的具体产品类
+ * 
+ * @see ANodeWA
+ */
+public class PolygonWA extends AShapeWA {
+
+	/** 构造函数A - 当Polygon形状已确认时调用 */
+	public PolygonWA(Polygon polygon, double x, double y) {
+		this.type = NodeType.Polygon;
+		this.node = polygon;
+		this.anchors = new AnchorPolygonSet(polygon, x, y);
+		this.anchors.hide();
+		this.addMouseEvent();
+	}
+
+	@Override
+	public String getDescription() {
+		return new String("多边形 (v = " + ((AnchorPolygonSet)anchors).getVergeNum() + ")");
+	}
+
+	/** 获取外接圆半径 */
+	public double getRadius() {
+		return ((AnchorPolygonSet)anchors).getRadius();
+	}
+
+	/** 重设外接圆半径 */
+	public void setRadius(double r) {
+		((AnchorPolygonSet)anchors).setRadius(r);
+	}
+	
+	private Polygon clonePolygon() {
+		Polygon poly = (Polygon)node;
+		Polygon newPoly = new Polygon();
+		for (Double point: poly.getPoints()) {
+			newPoly.getPoints().add(point + Default.pasteBiasX);
+		}
+		newPoly.setTranslateX(poly.getTranslateX() + Default.pasteBiasX);
+		newPoly.setTranslateY(poly.getTranslateY() + Default.pasteBiasX);
+		newPoly.setStrokeWidth(poly.getStrokeWidth());
+		newPoly.setFill(poly.getFill());
+		newPoly.setStroke(poly.getStroke());
+		return newPoly;
+	}
+	
+	@Override
+	public ANodeWA clone() {
+		Polygon polygon = clonePolygon();
+		PolygonWA polygonWA = new PolygonWA(polygon
+				, anchors.getTranslateX() + Default.pasteBiasX, anchors.getTranslateY() + Default.pasteBiasX);
+		return polygonWA;
+	}
+
+}

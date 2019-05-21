@@ -47,9 +47,6 @@ public abstract class AnchorSet {
 		this.setOriginPositions();
 	}
 
-	/** 构造函数初始化 - 添加锚点 */
-	protected abstract void addAnchors(Node node, double xLength, double yLength);
-	
 	/** 添加锚点拖拽事件；
 	 * 添加功能使锚点拖拽时显示位置 */
 	protected final void addMouseEvent() {
@@ -123,6 +120,15 @@ public abstract class AnchorSet {
 	public Anchor getAnchor(AnchorID aid) {
 		for (Anchor anchor: anchors) {
 			if (anchor.getAnchorId() == aid)
+				return anchor;
+		}
+		return null;
+	}
+
+	/** 获取指定Index锚点 */
+	public Anchor getAnchor(int id) {
+		for (Anchor anchor: anchors) {
+			if (anchor.getIndex() == id)
 				return anchor;
 		}
 		return null;

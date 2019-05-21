@@ -6,6 +6,7 @@ import AldebaRain.sketchpad.controllers.FrameController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -45,7 +46,7 @@ public class App extends Application {
 		// 初始化GUI
 		try { 
 			primaryStage.setTitle("MySketchpad");
-			//primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("img/icon.png")));
+			primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("img/icon.png")));
 			primaryStage.setWidth(1200);
 			primaryStage.setHeight(900);
 			primaryStage.setResizable(false); // 禁止窗口缩放

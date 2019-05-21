@@ -41,4 +41,8 @@ public abstract class AShapeWA extends ANodeWA {
 		((Shape)node).setStroke(color);
 	}
 
+	public double getRotate() {
+		return node.getRotate();
+	}
+	
 }
