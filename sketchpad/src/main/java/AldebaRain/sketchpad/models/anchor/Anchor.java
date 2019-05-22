@@ -122,7 +122,8 @@ public class Anchor extends Rectangle {
 		PaneManager.getCurrentPane().getPane().getChildren().add(tipLab);
 		tipLab.setTranslateX(this.getTranslateX());
 		tipLab.setTranslateY(this.getTranslateY());
-		tipLab.setText("X: " + this.getTranslateX() + ", Y: " + this.getTranslateY());
+		tipLab.setText("X: " + String.format("%.2f", this.getTranslateX()) + 
+				", Y: " + String.format("%.2f", this.getTranslateY()));
 		tipLab.setBackground(new Background(new BackgroundFill(Color.rgb(0xF0, 0xF8, 0xFF, 0.5), null, null)));
 	}
 	
@@ -130,7 +131,8 @@ public class Anchor extends Rectangle {
 	public void refreshTipLabel() {
 		tipLab.setTranslateX(this.getTranslateX());
 		tipLab.setTranslateY(this.getTranslateY());
-		tipLab.setText("X: " + this.getTranslateX() + ", Y: " + this.getTranslateY());
+		tipLab.setText("X: " + String.format("%.2f", this.getTranslateX()) + 
+				", Y: " + String.format("%.2f", this.getTranslateY()));
 	}
 
 	/** 锚点位置标签 - 移除 */
@@ -140,7 +142,8 @@ public class Anchor extends Rectangle {
 	
 	/** （Debug使用）获取锚点位置 */
 	public String toString() {
-		return new String("(" + this.getTranslateX() + "," + this.getTranslateY() + ")");
+		return new String("(" + String.format("%.2f", this.getTranslateX()) + 
+				"," + String.format("%.2f", this.getTranslateY() + ")"));
 	}
 	
 }

@@ -57,4 +57,9 @@ public class Default {
 	/** 多边形默认边长 */
 	public static final double polygonRadius = 60;
 	
+	/** 三角形默认边长 */
+	public static final double triangleLen = 100;
+	
+	/** 三角形y方向偏移（原因不明），真正偏移值是下面的值乘以外接圆半径 */
+	public static final double triangleBiasY = 0.25;
 }

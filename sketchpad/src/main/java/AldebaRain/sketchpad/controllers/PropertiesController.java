@@ -171,20 +171,20 @@ public class PropertiesController {
     		posXEndLab.setText("X2:");
     		posYEndLab.setVisible(true);
     		posYEndLab.setText("Y2");
-    		posXField.setText(String.valueOf(((LineWA)node).getStartX()));
-    		posYField.setText(String.valueOf(((LineWA)node).getStartY()));
+    		posXField.setText(String.format("%.2f", ((LineWA)node).getStartX()));
+    		posYField.setText(String.format("%.2f", ((LineWA)node).getStartY()));
     		posXEndField.setVisible(true);
-    		posXEndField.setText(String.valueOf(((LineWA)node).getEndX()));
+    		posXEndField.setText(String.format("%.2f", ((LineWA)node).getEndX()));
     		posYEndField.setVisible(true);
-    		posYEndField.setText(String.valueOf(((LineWA)node).getEndY()));
+    		posYEndField.setText(String.format("%.2f", ((LineWA)node).getEndY()));
     	}
     	else {
     		posXLab.setText("X:");
     		posYLab.setText("Y:");
     		posXEndLab.setVisible(false);
     		posYEndLab.setVisible(false);
-        	posXField.setText(String.valueOf(node.getTranslateX()));
-        	posYField.setText(String.valueOf(node.getTranslateY()));
+        	posXField.setText(String.format("%.2f", node.getTranslateX()));
+        	posYField.setText(String.format("%.2f", node.getTranslateY()));
     		posXEndField.setVisible(false);
     		posYEndField.setVisible(false);
     	}
@@ -192,21 +192,21 @@ public class PropertiesController {
 
     /** 设置大小属性 */
     private void setSize(ANodeWA node) {
-    	if (node.getType() == NodeType.Polygon) {
+    	if (node.getType() == NodeType.Polygon || node.getType() == NodeType.Triangle) {
     		// 只有外接圆半径以及边框宽度
     		sizeXLab.setText("R:");
-        	sizeXField.setText(String.valueOf(((PolygonWA)node).getRadius()));
+        	sizeXField.setText(String.format("%.2f", ((PolygonWA)node).getRadius()));
         	sizeYLab.setText("(R为正多边形外接圆半径)");
         	sizeYField.setVisible(false);
-        	sizeStrokeField.setText(String.valueOf(node.getStrokeWidth()));
+        	sizeStrokeField.setText(String.format("%.2f", node.getStrokeWidth()));
     	}
     	else {
     		sizeXLab.setText("X:");
-        	sizeXField.setText(String.valueOf(node.getLengthX()));
+        	sizeXField.setText(String.format("%.2f", node.getLengthX()));
         	sizeYLab.setText("Y:");
         	sizeYField.setVisible(true);
-        	sizeYField.setText(String.valueOf(node.getLengthY()));
-        	sizeStrokeField.setText(String.valueOf(node.getStrokeWidth()));
+        	sizeYField.setText(String.format("%.2f", node.getLengthY()));
+        	sizeStrokeField.setText(String.format("%.2f", node.getStrokeWidth()));
     	}
     }
 
@@ -313,7 +313,7 @@ public class PropertiesController {
     		ANodeWA node = selector.getList().get(0);
     		Double xLen = Double.valueOf(sizeXField.getText());
     		if (xLen != null) {
-        		if (node.getType() == NodeType.Polygon)
+        		if (node.getType() == NodeType.Polygon || node.getType() == NodeType.Triangle)
         			((PolygonWA)node).setRadius(xLen);
         		else
         			node.setLengthX(xLen);

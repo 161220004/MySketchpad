@@ -3,6 +3,7 @@ package AldebaRain.sketchpad.models.anchor;
 import java.util.ArrayList;
 import java.util.List;
 
+import AldebaRain.sketchpad.Default;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Polygon;
 
@@ -55,6 +56,10 @@ public class AnchorPolygonSet extends AnchorSet {
         double oy = oyPre + dy;
         r = Math.sqrt(ox * ox + oy * oy);
 		// 多边形变换
+        ((Polygon)parentNode).setTranslateX(xCenter);
+		if (this.getVergeNum() == 3)
+	        ((Polygon)parentNode).setTranslateY(yCenter + r * Default.triangleBiasY);
+		else ((Polygon)parentNode).setTranslateY(yCenter);
 		List<Double> points = ((Polygon)parentNode).getPoints();
 		for (int i = 0; i < points.size(); i += 2) {
 			double xDrag = xCenter + r * Math.cos(Math.PI / 2 + i * Math.PI / vergeNum);
@@ -106,7 +111,9 @@ public class AnchorPolygonSet extends AnchorSet {
 	public void setTranslateY(double y) {
 		double dy = y - yCenter;
 		yCenter = y;
-		parentNode.setTranslateY(y);
+		if (this.getVergeNum() == 3)
+			parentNode.setTranslateY(yCenter + r * Default.triangleBiasY);			
+		else parentNode.setTranslateY(yCenter);
 		List<Double> points = ((Polygon)parentNode).getPoints();
 		for (int i = 0; i < points.size(); i += 2) {
 			double py = points.get(i + 1) + dy;
@@ -121,6 +128,8 @@ public class AnchorPolygonSet extends AnchorSet {
 	/** 重设多边形外接圆半径 */
 	public void setRadius(double newR) {
 		r = newR;
+		if (this.getVergeNum() == 3)
+			parentNode.setTranslateY(yCenter + r * Default.triangleBiasY);	
 		List<Double> points = ((Polygon)parentNode).getPoints();
 		for (int i = 0; i < points.size(); i += 2) {
 			double newX = xCenter + newR * Math.cos(Math.PI / 2 + i * Math.PI / vergeNum);

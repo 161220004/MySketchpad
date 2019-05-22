@@ -82,7 +82,8 @@ public class ToolsController {
     /** 点击三角形工具触发 */
     @FXML
     private void onClickTriTool() {
-    	
+    	IPainter polyPainter = new PolygonPainter();
+    	polyPainter.paint(Default.shapeOX, Default.shapeOY, 3, Default.triangleLen / Math.sqrt(3));
     }
 
     /** 点击多边形工具触发 */

@@ -14,16 +14,20 @@ public class PolygonWA extends AShapeWA {
 
 	/** 构造函数A - 当Polygon形状已确认时调用 */
 	public PolygonWA(Polygon polygon, double x, double y) {
-		this.type = NodeType.Polygon;
 		this.node = polygon;
 		this.anchors = new AnchorPolygonSet(polygon, x, y);
 		this.anchors.hide();
+		if (((AnchorPolygonSet)anchors).getVergeNum() == 3)
+			this.type = NodeType.Triangle;
+		else this.type = NodeType.Polygon;
 		this.addMouseEvent();
 	}
 
 	@Override
 	public String getDescription() {
-		return new String("多边形 (v = " + ((AnchorPolygonSet)anchors).getVergeNum() + ")");
+		if (((AnchorPolygonSet)anchors).getVergeNum() == 3)
+			return new String("三角形");
+		else return new String("多边形 (v = " + ((AnchorPolygonSet)anchors).getVergeNum() + ")");
 	}
 
 	/** 获取外接圆半径 */
