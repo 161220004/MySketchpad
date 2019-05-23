@@ -1,6 +1,5 @@
 package AldebaRain.sketchpad.models.product;
 
-import AldebaRain.sketchpad.Default;
 import AldebaRain.sketchpad.models.anchor.AnchorRectangleSet;
 import javafx.scene.shape.Rectangle;
 
@@ -33,8 +32,8 @@ public class RectangleWA extends AShapeWA {
 	protected Rectangle cloneRectangle() {
 		Rectangle rect = (Rectangle)node;
 		Rectangle newRect = new Rectangle();
-		newRect.setTranslateX(rect.getTranslateX() + Default.pasteBiasX);
-		newRect.setTranslateY(rect.getTranslateY() + Default.pasteBiasY);
+		newRect.setTranslateX(rect.getTranslateX());
+		newRect.setTranslateY(rect.getTranslateY());
 		newRect.setWidth(rect.getWidth());
 		newRect.setHeight(rect.getHeight());
 		newRect.setStrokeWidth(rect.getStrokeWidth());

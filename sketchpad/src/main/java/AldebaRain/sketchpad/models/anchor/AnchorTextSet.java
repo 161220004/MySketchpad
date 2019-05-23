@@ -1,5 +1,6 @@
 package AldebaRain.sketchpad.models.anchor;
 
+import AldebaRain.sketchpad.App;
 import AldebaRain.sketchpad.Default;
 import javafx.scene.control.Label;
 import javafx.scene.shape.Rectangle;
@@ -26,4 +27,11 @@ public class AnchorTextSet extends AnchorRectangleSet {
 		label.setTranslateY(parentNode.getTranslateY());
 	}
 
+	@Override
+	protected void exitMouseDrag(Anchor anchor) {
+		this.setOriginPositions();
+		// 添加到历史记录
+		App.frameController.getHistoryController().saveAsHistory("文本大小变换");
+	}
+	
 }

@@ -1,6 +1,5 @@
 package AldebaRain.sketchpad.models.product;
 
-import AldebaRain.sketchpad.Default;
 import AldebaRain.sketchpad.models.anchor.AnchorEllipseSet;
 import javafx.scene.shape.Ellipse;
 
@@ -31,8 +30,8 @@ public class EllipseWA extends AShapeWA {
 	private Ellipse cloneEllipse() {
 		Ellipse ellipse = (Ellipse)node;
 		Ellipse newEllipse = new Ellipse();
-		newEllipse.setTranslateX(ellipse.getTranslateX() + Default.pasteBiasX);
-		newEllipse.setTranslateY(ellipse.getTranslateY() + Default.pasteBiasY);
+		newEllipse.setTranslateX(ellipse.getTranslateX());
+		newEllipse.setTranslateY(ellipse.getTranslateY());
 		newEllipse.setRadiusX(ellipse.getRadiusX());
 		newEllipse.setRadiusY(ellipse.getRadiusY());
 		newEllipse.setStrokeWidth(ellipse.getStrokeWidth());

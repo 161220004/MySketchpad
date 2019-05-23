@@ -1,6 +1,8 @@
 package AldebaRain.sketchpad.models.factory;
 
-import AldebaRain.sketchpad.manager.PaneManager;
+import AldebaRain.sketchpad.App;
+import AldebaRain.sketchpad.Default;
+import AldebaRain.sketchpad.hierarchy.PaneManager;
 import AldebaRain.sketchpad.models.product.RectangleWA;
 import javafx.scene.shape.Rectangle;
 
@@ -26,7 +28,14 @@ public class RectanglePainter implements IPainter {
 		Rectangle rect = createRectangle(xLen, yLen, x, y);
 		RectangleWA rectWA = new RectangleWA(rect);
 		// 在当前画布的当前图层绘制
-		PaneManager.getCurrentPane().getCurrentLayer().add(rectWA);
+		PaneManager.getInstance().getCurrentPane().add(rectWA);
+		// 添加到历史记录
+		App.frameController.getHistoryController().saveAsHistory("绘制矩形");
+	}
+
+	@Override
+	public void paint() {
+    	this.paint(Default.shapeOX, Default.shapeOY, Default.rectLengthX, Default.rectLengthY);
 	}
 
 }

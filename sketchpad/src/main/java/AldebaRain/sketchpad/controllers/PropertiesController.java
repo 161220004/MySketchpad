@@ -1,9 +1,12 @@
 package AldebaRain.sketchpad.controllers;
 
 import java.util.Comparator;
+import java.util.Optional;
 
-import AldebaRain.sketchpad.manager.*;
+import AldebaRain.sketchpad.App;
+import AldebaRain.sketchpad.hierarchy.*;
 import AldebaRain.sketchpad.models.product.*;
+import AldebaRain.sketchpad.selector.Selector;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -128,13 +131,13 @@ public class PropertiesController {
     	});
     	
     	// 所有文本框添加焦点监听事件
-    	posXField.focusedProperty().addListener(listener -> { onPosXInputChanged(); });
-    	posYField.focusedProperty().addListener(listener -> { onPosYInputChanged(); });
-    	posXEndField.focusedProperty().addListener(listener -> { onPosXEndInputChanged(); });
-    	posYEndField.focusedProperty().addListener(listener -> { onPosYEndInputChanged(); });
-    	sizeXField.focusedProperty().addListener(listener -> { onSizeXLenInputChanged(); });
-    	sizeYField.focusedProperty().addListener(listener -> { onSizeYLenInputChanged(); });
-    	sizeStrokeField.focusedProperty().addListener(listener -> { onSizeStrokeInputChanged(); });
+    	posXField.focusedProperty().addListener(listener -> { if (!posXField.isFocused()) onPosXInputChanged(); });
+    	posYField.focusedProperty().addListener(listener -> { if (!posYField.isFocused()) onPosYInputChanged(); });
+    	posXEndField.focusedProperty().addListener(listener -> { if (!posXEndField.isFocused()) onPosXEndInputChanged(); });
+    	posYEndField.focusedProperty().addListener(listener -> { if (!posYEndField.isFocused()) onPosYEndInputChanged(); });
+    	sizeXField.focusedProperty().addListener(listener -> { if (!sizeXField.isFocused()) onSizeXLenInputChanged(); });
+    	sizeYField.focusedProperty().addListener(listener -> { if (!sizeYField.isFocused()) onSizeYLenInputChanged(); });
+    	sizeStrokeField.focusedProperty().addListener(listener -> { if (!sizeStrokeField.isFocused()) onSizeStrokeInputChanged(); });
     	colorFillPicker.setOnAction(e -> { onColorFillInputChanged(); });
     	colorStrokePicker.setOnAction(e -> { onColorStrokeInputChanged(); });
     	colorTextPicker.setOnAction(e -> { onColorTextInputChanged(); });
@@ -143,11 +146,11 @@ public class PropertiesController {
 	/** 根据选中的图形，刷新属性界面的方法 */
     public void refreshPropertiesView() {
     	// 获取当前画布的图形选择器
-    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
     	// 若选中一个对象则显示属性面板，否则不显示
     	if (selector.count() == 1) {
     		accordion.setVisible(true);
-    		ANodeWA node = selector.getList().get(0);
+    		ANodeWA node = selector.getNodes().get(0);
     		setDescription(node);
     		setPosition(node);
     		setSize(node);
@@ -236,20 +239,34 @@ public class PropertiesController {
     	}
     }
 
+    /** 封装可变类型，以判断TextField接受的是否是Double，若不是返回null */
+    private Optional<Double> toDouble(String text) {
+    	try {
+            return Optional.of(Double.parseDouble(text));
+        } catch (Exception e){
+            return Optional.empty();
+        }
+    }
+    
     /** 属性输入 - 输入坐标x */
     private void onPosXInputChanged() {
     	// 获取当前画布的图形选择器
-    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
     	// 若选中一个对象则对其进行更改
     	if (selector.count() == 1) {
-    		ANodeWA node = selector.getList().get(0);
-    		Double x = Double.valueOf(posXField.getText());
-    		if (x != null) {
-    			if (node.getType() == NodeType.Line)
+    		ANodeWA node = selector.getNodes().get(0);
+    		this.toDouble(posXField.getText()).ifPresent(x -> {
+    			if (node.getType() == NodeType.Line) {
     				((LineWA)node).setStartX(x);
-    			else
+    				// 添加到历史记录
+    				App.frameController.getHistoryController().saveAsHistory("直线变换");
+    			}
+    			else {
     				node.setTranslateX(x);
-    		}
+    				// 添加到历史记录
+    				App.frameController.getHistoryController().saveAsHistory(node.getType().getDesc() + "位置变换");
+    			}
+    		});
     	}
 		// 刷新属性面板
     	this.refreshPropertiesView();
@@ -258,17 +275,22 @@ public class PropertiesController {
     /** 属性输入 - 输入y坐标 */
     private void onPosYInputChanged() {
     	// 获取当前画布的图形选择器
-    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
     	// 若选中一个对象则对其进行更改
     	if (selector.count() == 1) {
-    		ANodeWA node = selector.getList().get(0);
-    		Double y = Double.valueOf(posYField.getText());
-    		if (y != null) {
-    			if (node.getType() == NodeType.Line)
+    		ANodeWA node = selector.getNodes().get(0);
+    		this.toDouble(posYField.getText()).ifPresent(y -> {
+    			if (node.getType() == NodeType.Line) {
     				((LineWA)node).setStartY(y);
-    			else 
+    				// 添加到历史记录
+    				App.frameController.getHistoryController().saveAsHistory("直线变换");
+    			}
+    			else {
     				node.setTranslateY(y);
-    		}
+    				// 添加到历史记录
+    				App.frameController.getHistoryController().saveAsHistory(node.getType().getDesc() + "位置变换");
+    			}
+    		});
     	}    	
 		// 刷新属性面板
     	this.refreshPropertiesView();
@@ -277,13 +299,17 @@ public class PropertiesController {
     /** 属性输入 - 输入坐标xEnd */
     private void onPosXEndInputChanged() {
     	// 获取当前画布的图形选择器
-    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
     	// 若选中一个对象则对其进行更改
     	if (selector.count() == 1) {
-    		ANodeWA node = selector.getList().get(0);
-    		Double xEnd = Double.valueOf(posXEndField.getText());
-    		if (node.getType() == NodeType.Line && xEnd != null) 
-				((LineWA)node).setEndX(xEnd);
+    		ANodeWA node = selector.getNodes().get(0);
+    		this.toDouble(posXEndField.getText()).ifPresent(xEnd -> {
+        		if (node.getType() == NodeType.Line) {
+    				((LineWA)node).setEndX(xEnd);
+    				// 添加到历史记录
+    				App.frameController.getHistoryController().saveAsHistory("直线变换");
+        		}
+    		});
     	}
 		// 刷新属性面板
     	this.refreshPropertiesView();
@@ -292,13 +318,17 @@ public class PropertiesController {
     /** 属性输入 - 输入坐标yEnd */
     private void onPosYEndInputChanged() {
     	// 获取当前画布的图形选择器
-    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
     	// 若选中一个对象则对其进行更改
     	if (selector.count() == 1) {
-    		ANodeWA node = selector.getList().get(0);
-    		Double yEnd = Double.valueOf(posYEndField.getText());
-    		if (node.getType() == NodeType.Line && yEnd != null) 
-				((LineWA)node).setEndY(yEnd);
+    		ANodeWA node = selector.getNodes().get(0);
+    		this.toDouble(posYEndField.getText()).ifPresent(yEnd -> {
+        		if (node.getType() == NodeType.Line) {
+    				((LineWA)node).setEndY(yEnd);
+    				// 添加到历史记录
+    				App.frameController.getHistoryController().saveAsHistory("直线变换");
+        		}
+    		});
     	}
 		// 刷新属性面板
     	this.refreshPropertiesView();
@@ -307,17 +337,20 @@ public class PropertiesController {
     /** 属性输入 - 输入x方向长度或多边形外接圆半径 */
     private void onSizeXLenInputChanged() {
     	// 获取当前画布的图形选择器
-    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
     	// 若选中一个对象则对其进行更改
     	if (selector.count() == 1) {
-    		ANodeWA node = selector.getList().get(0);
-    		Double xLen = Double.valueOf(sizeXField.getText());
-    		if (xLen != null) {
+    		ANodeWA node = selector.getNodes().get(0);
+    		this.toDouble(sizeXField.getText()).ifPresent(xLen -> {
         		if (node.getType() == NodeType.Polygon || node.getType() == NodeType.Triangle)
         			((PolygonWA)node).setRadius(xLen);
         		else
         			node.setLengthX(xLen);
-    		}
+				// 添加到历史记录
+        		if (node.getType() == NodeType.Line)
+        			App.frameController.getHistoryController().saveAsHistory("直线变换");
+        		else App.frameController.getHistoryController().saveAsHistory(node.getType().getDesc() + "大小变换");
+    		});
     	}
 		// 刷新属性面板
     	this.refreshPropertiesView();
@@ -326,13 +359,17 @@ public class PropertiesController {
     /** 属性输入 - 输入y方向长度 */
     private void onSizeYLenInputChanged() {
     	// 获取当前画布的图形选择器
-    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
     	// 若选中一个对象则对其进行更改
     	if (selector.count() == 1) {
-    		ANodeWA node = selector.getList().get(0);
-    		Double yLen = Double.valueOf(sizeYField.getText());
-    		if (yLen != null) 
+    		ANodeWA node = selector.getNodes().get(0);
+    		this.toDouble(sizeYField.getText()).ifPresent(yLen -> {
 				node.setLengthY(yLen);
+				// 添加到历史记录
+        		if (node.getType() == NodeType.Line)
+        			App.frameController.getHistoryController().saveAsHistory("直线变换");
+        		else App.frameController.getHistoryController().saveAsHistory(node.getType().getDesc() + "大小变换");
+    		});
     	}
 		// 刷新属性面板
     	this.refreshPropertiesView();
@@ -341,13 +378,15 @@ public class PropertiesController {
     /** 属性输入 - 输入边框宽度 */
     private void onSizeStrokeInputChanged() {
     	// 获取当前画布的图形选择器
-    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
     	// 若选中一个对象则对其进行更改
     	if (selector.count() == 1) {
-    		ANodeWA node = selector.getList().get(0);
-    		Double width = Double.valueOf(sizeStrokeField.getText());
-    		if (width != null) 
+    		ANodeWA node = selector.getNodes().get(0);
+    		this.toDouble(sizeStrokeField.getText()).ifPresent(width -> {
 				node.setStrokeWidth(width);
+				// 添加到历史记录
+				App.frameController.getHistoryController().saveAsHistory(node.getType().getDesc() + "边框宽度变换");
+    		});
     	}
 		// 刷新属性面板
     	this.refreshPropertiesView();
@@ -356,12 +395,14 @@ public class PropertiesController {
     /** 属性输入 - 输入填充颜色 */
     private void onColorFillInputChanged() {
     	// 获取当前画布的图形选择器
-    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
     	// 若选中一个对象则对其进行更改
     	if (selector.count() == 1) {
-    		ANodeWA node = selector.getList().get(0);
+    		ANodeWA node = selector.getNodes().get(0);
     		Color fill = colorFillPicker.getValue();
 			node.setFill(fill);
+			// 添加到历史记录
+			App.frameController.getHistoryController().saveAsHistory(node.getType().getDesc() + "填充颜色变换");
     	}
 		// 刷新属性面板
     	this.refreshPropertiesView();
@@ -370,12 +411,14 @@ public class PropertiesController {
     /** 属性输入 - 输入边框颜色 */
     private void onColorStrokeInputChanged() {
     	// 获取当前画布的图形选择器
-    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
     	// 若选中一个对象则对其进行更改
     	if (selector.count() == 1) {
-    		ANodeWA node = selector.getList().get(0);
+    		ANodeWA node = selector.getNodes().get(0);
     		Color color = colorStrokePicker.getValue();
 			node.setStroke(color);
+			// 添加到历史记录
+			App.frameController.getHistoryController().saveAsHistory(node.getType().getDesc() + "边框颜色变换");
     	}
 		// 刷新属性面板
     	this.refreshPropertiesView();
@@ -384,12 +427,14 @@ public class PropertiesController {
     /** 属性输入 - 输入文本颜色 */
     private void onColorTextInputChanged() {
     	// 获取当前画布的图形选择器
-    	Selector selector = PaneManager.getCurrentPane().getSelector();
+    	Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
     	// 若选中一个对象则对其进行更改
     	if (selector.count() == 1) {
-    		ANodeWA node = selector.getList().get(0);
+    		ANodeWA node = selector.getNodes().get(0);
     		Color color = colorTextPicker.getValue();
 			((TextWA)node).getLabel().setTextFill(color);
+			// 添加到历史记录
+			App.frameController.getHistoryController().saveAsHistory("文本颜色变换");
     	}
 		// 刷新属性面板
     	this.refreshPropertiesView();

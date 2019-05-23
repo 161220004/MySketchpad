@@ -1,7 +1,8 @@
 package AldebaRain.sketchpad.models.factory;
 
+import AldebaRain.sketchpad.App;
 import AldebaRain.sketchpad.Default;
-import AldebaRain.sketchpad.manager.PaneManager;
+import AldebaRain.sketchpad.hierarchy.PaneManager;
 import AldebaRain.sketchpad.models.product.*;
 import javafx.scene.shape.Line;
 
@@ -30,7 +31,14 @@ public class LinePainter implements IPainter {
 		Line line = createLine(xStart, yStart, xEnd, yEnd);
 		LineWA lineWA = new LineWA(line);
 		// 在当前画布的当前图层绘制
-		PaneManager.getCurrentPane().getCurrentLayer().add(lineWA);
+		PaneManager.getInstance().getCurrentPane().add(lineWA);
+		// 添加到历史记录
+		App.frameController.getHistoryController().saveAsHistory("绘制直线");
+	}
+
+	@Override
+	public void paint() {
+		this.paint(Default.lineStartX, Default.lineStartY, Default.lineEndX, Default.lineEndY);
 	}
 
 }

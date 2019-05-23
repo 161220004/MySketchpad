@@ -1,5 +1,6 @@
 package AldebaRain.sketchpad.models.anchor;
 
+import AldebaRain.sketchpad.App;
 import javafx.scene.shape.Rectangle;
 
 public class AnchorRectangleSet extends AnchorShapeSet {
@@ -16,4 +17,11 @@ public class AnchorRectangleSet extends AnchorShapeSet {
 		((Rectangle)parentNode).setHeight(this.getLengthY());
 	}
 
+	@Override
+	protected void exitMouseDrag(Anchor anchor) {
+		super.exitMouseDrag(anchor);
+		// 添加到历史记录
+		App.frameController.getHistoryController().saveAsHistory("矩形大小变换");
+	}
+	
 }

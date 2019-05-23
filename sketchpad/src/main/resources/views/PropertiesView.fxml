@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="properties" minHeight="0.0" minWidth="0.0" prefHeight="868.0" prefWidth="240.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AldebaRain.sketchpad.controllers.PropertiesController">
+<AnchorPane fx:id="properties" minHeight="0.0" minWidth="0.0" prefHeight="868.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AldebaRain.sketchpad.controllers.PropertiesController">
    <children>
-      <Accordion fx:id="accordion" layoutX="10.0" layoutY="10.0" prefHeight="868.0" prefWidth="240.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Accordion fx:id="accordion" layoutX="10.0" layoutY="10.0" prefHeight="868.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <panes>
             <TitledPane fx:id="ttp00" animated="false" text="类型描述">
                <content>

@@ -8,5 +8,8 @@ public interface IPainter {
 
 	/** 在当前画布的当前图层上绘制ShapeWA */
 	public void paint(double x, double y, double xLen, double yLen);
+
+	/** 在当前画布的当前图层上绘制默认大小的ShapeWA */
+	public void paint();
 	
 }

@@ -1,6 +1,7 @@
-package AldebaRain.sketchpad.manager;
+package AldebaRain.sketchpad.hierarchy;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 画板管理器，对应于软件的一次运行.<br>
@@ -8,29 +9,41 @@ import java.util.ArrayList;
  * 维护当前画板；
  * 采用单例模式（软件的一次运行只有一个画板管理器和一个当前画板）
  * 
- * @see LayerManager
  */
-public class PaneManager extends AManager<LayerManager> {
+public class PaneManager {
 
-	/** 当前画板（软件的一次运行仅一个当前画板） */
-	private static LayerManager currentPane = null;
+	/** 画布列表 */
+	private List<LayerManager> panes;
+	
+	/** 当前画布 */
+	private LayerManager currentPane = null;
 	
 	/** 单例 */
 	private static PaneManager instance = null;
 	
 	private PaneManager() { 
-		list = new ArrayList<LayerManager>();
+		panes = new ArrayList<>();
 		// TODO: currentPane的初始化
 	}
 
 	/** 获取当前画板 */
-	public static LayerManager getCurrentPane() {
+	public LayerManager getCurrentPane() {
 		return currentPane;
 	}
 
 	/** 重设当前画板 */
-	public static void setCurrentPane(LayerManager pane) {
+	public void setCurrentPane(LayerManager pane) {
 		currentPane = pane;
+	}
+	
+	/** 获取画布列表 */
+	public List<LayerManager> getPanes() {
+		return panes;
+	}
+	
+	/** 添加画布 */
+	public void add(LayerManager pane) {
+		panes.add(pane);
 	}
 	
 	/** 获取单例 */

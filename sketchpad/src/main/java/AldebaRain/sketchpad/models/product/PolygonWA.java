@@ -1,6 +1,5 @@
 package AldebaRain.sketchpad.models.product;
 
-import AldebaRain.sketchpad.Default;
 import AldebaRain.sketchpad.models.anchor.AnchorPolygonSet;
 import javafx.scene.shape.Polygon;
 
@@ -44,10 +43,10 @@ public class PolygonWA extends AShapeWA {
 		Polygon poly = (Polygon)node;
 		Polygon newPoly = new Polygon();
 		for (Double point: poly.getPoints()) {
-			newPoly.getPoints().add(point + Default.pasteBiasX);
+			newPoly.getPoints().add(point);
 		}
-		newPoly.setTranslateX(poly.getTranslateX() + Default.pasteBiasX);
-		newPoly.setTranslateY(poly.getTranslateY() + Default.pasteBiasX);
+		newPoly.setTranslateX(poly.getTranslateX());
+		newPoly.setTranslateY(poly.getTranslateY());
 		newPoly.setStrokeWidth(poly.getStrokeWidth());
 		newPoly.setFill(poly.getFill());
 		newPoly.setStroke(poly.getStroke());
@@ -57,8 +56,7 @@ public class PolygonWA extends AShapeWA {
 	@Override
 	public ANodeWA clone() {
 		Polygon polygon = clonePolygon();
-		PolygonWA polygonWA = new PolygonWA(polygon
-				, anchors.getTranslateX() + Default.pasteBiasX, anchors.getTranslateY() + Default.pasteBiasX);
+		PolygonWA polygonWA = new PolygonWA(polygon, anchors.getTranslateX(), anchors.getTranslateY());
 		return polygonWA;
 	}
 

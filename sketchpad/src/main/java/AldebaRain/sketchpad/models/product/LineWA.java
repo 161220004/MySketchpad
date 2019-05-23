@@ -1,6 +1,5 @@
 package AldebaRain.sketchpad.models.product;
 
-import AldebaRain.sketchpad.Default;
 import AldebaRain.sketchpad.models.anchor.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -102,12 +101,12 @@ public class LineWA extends ANodeWA {
 		Line line = (Line)node;
 		Line newLine = new Line();
 		// 少量偏移
-		newLine.setStartX(line.getStartX() + Default.pasteBiasX);
-		newLine.setStartY(line.getStartY() + Default.pasteBiasY);
-		newLine.setEndX(line.getEndX() + Default.pasteBiasX);
-		newLine.setEndY(line.getEndY() + Default.pasteBiasY);
-		newLine.setTranslateX(line.getTranslateX() + Default.pasteBiasX);
-		newLine.setTranslateY(line.getTranslateY() + Default.pasteBiasY);
+		newLine.setStartX(line.getStartX());
+		newLine.setStartY(line.getStartY());
+		newLine.setEndX(line.getEndX());
+		newLine.setEndY(line.getEndY());
+		newLine.setTranslateX(line.getTranslateX());
+		newLine.setTranslateY(line.getTranslateY());
 		newLine.setStrokeWidth(line.getStrokeWidth());
 		newLine.setStroke(line.getStroke());
 		return newLine;

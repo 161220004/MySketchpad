@@ -1,6 +1,6 @@
 package AldebaRain.sketchpad.models.anchor;
 
-import AldebaRain.sketchpad.manager.PaneManager;
+import AldebaRain.sketchpad.hierarchy.PaneManager;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
@@ -119,7 +119,7 @@ public class Anchor extends Rectangle {
 	/** 锚点位置标签 - 初始化 */
 	public void initTipLabel() {
 		tipLab = new Label();
-		PaneManager.getCurrentPane().getPane().getChildren().add(tipLab);
+		PaneManager.getInstance().getCurrentPane().getPane().getChildren().add(tipLab);
 		tipLab.setTranslateX(this.getTranslateX());
 		tipLab.setTranslateY(this.getTranslateY());
 		tipLab.setText("X: " + String.format("%.2f", this.getTranslateX()) + 
@@ -137,7 +137,7 @@ public class Anchor extends Rectangle {
 
 	/** 锚点位置标签 - 移除 */
 	public void removeTipLabel() {
-		PaneManager.getCurrentPane().getPane().getChildren().remove(tipLab);
+		PaneManager.getInstance().getCurrentPane().getPane().getChildren().remove(tipLab);
 	}
 	
 	/** （Debug使用）获取锚点位置 */

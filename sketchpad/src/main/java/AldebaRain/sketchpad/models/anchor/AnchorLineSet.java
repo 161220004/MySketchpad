@@ -2,6 +2,7 @@ package AldebaRain.sketchpad.models.anchor;
 
 import java.util.ArrayList;
 
+import AldebaRain.sketchpad.App;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
@@ -119,6 +120,8 @@ public class AnchorLineSet extends AnchorSet {
     	yStartBefore = yStartDrag;
     	xEndBefore = xEndDrag;
     	yEndBefore = yEndDrag;
+		// 添加到历史记录
+		App.frameController.getHistoryController().saveAsHistory("直线变换");
 	}
 
 	@Override

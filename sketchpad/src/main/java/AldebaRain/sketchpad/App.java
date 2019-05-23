@@ -47,7 +47,7 @@ public class App extends Application {
 		try { 
 			primaryStage.setTitle("MySketchpad");
 			primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("img/icon.png")));
-			primaryStage.setWidth(1200);
+			primaryStage.setWidth(1260);
 			primaryStage.setHeight(900);
 			primaryStage.setResizable(false); // 禁止窗口缩放
 			stage = primaryStage;

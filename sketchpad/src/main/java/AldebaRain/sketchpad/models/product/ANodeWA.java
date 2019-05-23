@@ -2,9 +2,9 @@ package AldebaRain.sketchpad.models.product;
 
 import AldebaRain.sketchpad.App;
 import AldebaRain.sketchpad.State;
-import AldebaRain.sketchpad.manager.PaneManager;
-import AldebaRain.sketchpad.manager.Selector;
+import AldebaRain.sketchpad.hierarchy.PaneManager;
 import AldebaRain.sketchpad.models.anchor.AnchorSet;
+import AldebaRain.sketchpad.selector.Selector;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -38,7 +38,7 @@ public abstract class ANodeWA {
 
 	/** 选中事件 - 释放鼠标后根据情况选择图形或取消选择 */
 	protected void refreshSelected(MouseEvent e) {
-		Selector selector = PaneManager.getCurrentPane().getSelector();
+		Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
 		// 若进行了拖拽，则选择器不发生改变
 		if (State.hasDragged)
 			return;
@@ -81,6 +81,9 @@ public abstract class ANodeWA {
 	/** 图形拖拽事件 - 结束拖拽 */
 	protected void exitMouseDrag() {
         anchors.setOriginPositions();
+		// 若拖拽了图形，添加到历史记录
+		if (State.hasDragged)
+			App.frameController.getHistoryController().saveAsHistory(this.getType().getDesc() + "位置变换");
 	}	
 
 	/** 添加图形拖拽事件 */

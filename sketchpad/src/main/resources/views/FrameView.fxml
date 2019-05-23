@@ -7,23 +7,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="frameWindow" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AldebaRain.sketchpad.controllers.FrameController">
+<BorderPane fx:id="frameWindow" prefHeight="900.0" prefWidth="1260.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AldebaRain.sketchpad.controllers.FrameController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="文件">
             <items>
-              <MenuItem mnemonicParsing="false" text="新建" />
-                  <MenuItem mnemonicParsing="false" text="打开" />
-                  <MenuItem mnemonicParsing="false" text="保存" />
+              <MenuItem mnemonicParsing="false" text="导入" />
+                  <MenuItem mnemonicParsing="false" text="导出" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="编辑">
-            <items>
-              <MenuItem mnemonicParsing="false" text="复制" />
-                  <MenuItem mnemonicParsing="false" text="粘贴" />
-                  <MenuItem mnemonicParsing="false" text="删除" />
-            </items>
+          <Menu mnemonicParsing="false" text="设置">
+               <items>
+                  <CheckMenuItem fx:id="showDragPosCMI" mnemonicParsing="false" text="显示拖拽位置提示" />
+                  <CheckMenuItem fx:id="useMultiHistoryCMI" mnemonicParsing="false" text="使用多分支历史记录" />
+               </items>
           </Menu>
           <Menu mnemonicParsing="false" text="关于">
             <items>
@@ -39,7 +37,7 @@
    <center>
       <TabPane fx:id="paneTabManager" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <tabs>
-            <Tab fx:id="moreTab" closable="false" text="+">
+            <Tab fx:id="moreTab" closable="false" text="new">
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
@@ -51,7 +49,7 @@
       </TabPane>
    </center>
    <right>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane prefHeight="868.0" prefWidth="250.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
             <Tab text="属性">
                <content>
@@ -65,7 +63,7 @@
             </Tab>
             <Tab text="历史记录">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <fx:include fx:id="history" source="HistoryView.fxml" /> 
                </content>
             </Tab>
         </tabs>

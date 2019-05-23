@@ -3,6 +3,7 @@ package AldebaRain.sketchpad.models.anchor;
 import java.util.ArrayList;
 import java.util.List;
 
+import AldebaRain.sketchpad.App;
 import AldebaRain.sketchpad.Default;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Polygon;
@@ -71,6 +72,15 @@ public class AnchorPolygonSet extends AnchorSet {
 		}
 	}
 
+	@Override
+	protected void exitMouseDrag(Anchor anchor) {
+		super.exitMouseDrag(anchor);
+		// 添加到历史记录
+		if (vergeNum == 3)
+			App.frameController.getHistoryController().saveAsHistory("三角形大小变换");
+		else App.frameController.getHistoryController().saveAsHistory("正多边形大小变换");
+	}
+	
 	/** 获取边数 */
 	public int getVergeNum() {
 		return vergeNum;

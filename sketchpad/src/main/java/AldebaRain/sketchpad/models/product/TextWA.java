@@ -1,9 +1,8 @@
 package AldebaRain.sketchpad.models.product;
 
 import AldebaRain.sketchpad.App;
-import AldebaRain.sketchpad.Default;
 import AldebaRain.sketchpad.State;
-import AldebaRain.sketchpad.manager.PaneManager;
+import AldebaRain.sketchpad.hierarchy.PaneManager;
 import AldebaRain.sketchpad.models.anchor.AnchorTextSet;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -81,12 +80,14 @@ public class TextWA extends RectangleWA {
 				field.setText(label.getText());
 				field.setEditable(true);
 				field.requestFocus();
-				PaneManager.getCurrentPane().getPane().getChildren().add(field);
+				PaneManager.getInstance().getCurrentPane().getPane().getChildren().add(field);
 				// 更改内容完毕的操作
 				field.setOnKeyPressed(event -> { 
 					if (event.getCode() == KeyCode.ENTER) {
 						label.setText(field.getText());
-						PaneManager.getCurrentPane().getPane().getChildren().remove(field);
+						PaneManager.getInstance().getCurrentPane().getPane().getChildren().remove(field);
+	    				// 添加到历史记录
+	    				App.frameController.getHistoryController().saveAsHistory("文本内容修改");
 					}
 				});
 			}
@@ -100,6 +101,13 @@ public class TextWA extends RectangleWA {
 		pane.getChildren().add(label);
 	}
 	
+	/** 重写从当前画布移除 */
+	@Override
+	public void removeFromPane(Pane pane) {
+		super.removeFromPane(pane);
+		pane.getChildren().remove(label);
+	}
+	
 	/** 获取文本标签 */
 	public Label getLabel() {
 		return label;
@@ -110,17 +118,30 @@ public class TextWA extends RectangleWA {
 		return new String("文本");
 	}
 
+	@Override
+	public void setTranslateX(double x) {
+		super.setTranslateX(x);
+		label.setTranslateX(x);
+	}
+	
+	@Override
+	public void setTranslateY(double y) {
+		super.setTranslateY(y);
+		label.setTranslateY(y);
+	}
+	
 	/** 克隆一个Label类型 */
 	private Label cloneLabel() {
 		Label newLabel = new Label();
-		newLabel.setTranslateX(label.getTranslateX() + Default.pasteBiasX);
-		newLabel.setTranslateY(label.getTranslateY() + Default.pasteBiasY);
+		newLabel.setTranslateX(label.getTranslateX());
+		newLabel.setTranslateY(label.getTranslateY());
 		newLabel.setPrefWidth(label.getPrefWidth());
 		newLabel.setPrefHeight(label.getPrefHeight());
 		newLabel.setMaxWidth(label.getMaxWidth());
 		newLabel.setMaxHeight(label.getMaxHeight());
-		newLabel.setText("请输入描述...");
-		newLabel.setWrapText(true);
+		newLabel.setText(label.getText());
+		newLabel.setWrapText(label.isWrapText());
+		newLabel.setAlignment(label.getAlignment());
 		return newLabel;
 	}
 	

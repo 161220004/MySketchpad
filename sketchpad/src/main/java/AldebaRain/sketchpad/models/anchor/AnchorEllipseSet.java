@@ -1,5 +1,6 @@
 package AldebaRain.sketchpad.models.anchor;
 
+import AldebaRain.sketchpad.App;
 import javafx.scene.shape.Ellipse;
 
 public class AnchorEllipseSet extends AnchorShapeSet {
@@ -14,6 +15,13 @@ public class AnchorEllipseSet extends AnchorShapeSet {
 	protected void resizeShape() {
 		((Ellipse)parentNode).setRadiusX(this.getLengthX() / 2);
 		((Ellipse)parentNode).setRadiusY(this.getLengthY() / 2);
+	}
+	
+	@Override
+	protected void exitMouseDrag(Anchor anchor) {
+		super.exitMouseDrag(anchor);
+		// 添加到历史记录
+		App.frameController.getHistoryController().saveAsHistory("椭圆大小变换");
 	}
 	
 }

@@ -1,8 +1,9 @@
-package AldebaRain.sketchpad.manager;
+package AldebaRain.sketchpad.selector;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import AldebaRain.sketchpad.hierarchy.PaneManager;
 import AldebaRain.sketchpad.models.product.ANodeWA;
 
 /**
@@ -10,29 +11,31 @@ import AldebaRain.sketchpad.models.product.ANodeWA;
  * 维护被复制的所有图形列表；
  * 采用单例模式（软件的一次运行只有一个剪贴板）
  * 
- * @see AManager
  */
-public class Clipboard extends AManager<ANodeWA> {
+public class Clipboard {
 
+	/** 复制的所有图形列表 */
+	private List<ANodeWA> nodes;
+	
 	/** 单例 */
 	private static Clipboard instance = null;
 	
 	private Clipboard() {
-		list = new ArrayList<ANodeWA>();
+		nodes = new ArrayList<>();
 	}
 	
 	/** 复制操作，将当前画布的所有被选中图形深克隆到剪贴板的图形列表 */
-	public void copy(List<ANodeWA> nodes) {
-		this.removeAll();
-		for (ANodeWA node: nodes) {
-			this.add(node.clone());
+	public void copy(List<ANodeWA> selectedNodes) {
+		nodes.removeAll(nodes);
+		for (ANodeWA node: selectedNodes) {
+			nodes.add(node.clone());
 		}
 	}
 	
 	/** 粘贴操作，将剪贴板中的所有图形绘制到当前画布的当前图层 */
 	public void paste() {
-		for (ANodeWA node: list) {
-			PaneManager.getCurrentPane().getCurrentLayer().add(node);
+		for (ANodeWA node: nodes) {
+			PaneManager.getInstance().getCurrentPane().add(node);
 		}
 	}
 	

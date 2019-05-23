@@ -1,7 +1,8 @@
 package AldebaRain.sketchpad.models.factory;
 
+import AldebaRain.sketchpad.App;
 import AldebaRain.sketchpad.Default;
-import AldebaRain.sketchpad.manager.PaneManager;
+import AldebaRain.sketchpad.hierarchy.PaneManager;
 import AldebaRain.sketchpad.models.product.TextWA;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -48,7 +49,14 @@ public class TextPainter implements IPainter {
 		Label label = createLabel(x, y, xLen - Default.textLabelMargin, yLen - Default.textLabelMargin);
 		TextWA textWA = new TextWA(rect, label);
 		// 在当前画布的当前图层绘制
-		PaneManager.getCurrentPane().getCurrentLayer().add(textWA);
+		PaneManager.getInstance().getCurrentPane().add(textWA);
+		// 添加到历史记录
+		App.frameController.getHistoryController().saveAsHistory("绘制描述文本");
+	}
+
+	@Override
+	public void paint() {
+    	this.paint(Default.shapeOX, Default.shapeOY, Default.textLabelLenX, Default.textLabelLenY);
 	}
 
 }

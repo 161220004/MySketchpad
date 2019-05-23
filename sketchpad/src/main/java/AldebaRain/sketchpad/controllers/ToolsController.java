@@ -62,21 +62,21 @@ public class ToolsController {
     @FXML
     private void onClickLineTool() {
     	IPainter linePainter = new LinePainter();
-    	linePainter.paint(Default.lineStartX, Default.lineStartY, Default.lineEndX, Default.lineEndY);
+    	linePainter.paint();
     }
 
     /** 点击椭圆工具触发 */
     @FXML
     private void onClickEllipseTool() {
     	IPainter ellipsePainter = new EllipsePainter();
-    	ellipsePainter.paint(Default.shapeOX, Default.shapeOY, 2 * Default.circleRadius, 2 * Default.circleRadius);
+    	ellipsePainter.paint();
     }
 
     /** 点击长方形工具触发 */
     @FXML
     private void onClickRectTool() {
     	IPainter rectPainter = new RectanglePainter();
-    	rectPainter.paint(Default.shapeOX, Default.shapeOY, Default.rectLengthX, Default.rectLengthY);
+    	rectPainter.paint();
     }
 
     /** 点击三角形工具触发 */
@@ -90,14 +90,14 @@ public class ToolsController {
     @FXML
     private void onClickPolyTool() {
     	IPainter polyPainter = new PolygonPainter();
-    	polyPainter.paint(Default.shapeOX, Default.shapeOY, Default.polygonVergeNum, Default.polygonRadius);
+    	polyPainter.paint();
     }
 
     /** 点击描述文本工具触发 */
     @FXML
     private void onClickTextTool() {
     	IPainter textPainter = new TextPainter();
-    	textPainter.paint(Default.shapeOX, Default.shapeOY, Default.textLabelLenX, Default.textLabelLenY);
+    	textPainter.paint();
     }
 
 }

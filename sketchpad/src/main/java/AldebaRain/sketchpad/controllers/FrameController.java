@@ -3,9 +3,14 @@ package AldebaRain.sketchpad.controllers;
 import java.util.Iterator;
 import java.util.List;
 
-import AldebaRain.sketchpad.manager.*;
+import AldebaRain.sketchpad.App;
+import AldebaRain.sketchpad.State;
+import AldebaRain.sketchpad.hierarchy.*;
 import AldebaRain.sketchpad.models.product.ANodeWA;
+import AldebaRain.sketchpad.selector.Clipboard;
+import AldebaRain.sketchpad.selector.Selector;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
@@ -49,6 +54,14 @@ public class FrameController {
 	@FXML
     private PropertiesController propertiesController;
 	
+	/** 注入历史面板 */
+	@FXML
+    private AnchorPane history;
+
+	/** 注入历史面板控制器 */
+	@FXML
+	private HistoryController historyController;
+	
 	/** 画布新建功能标签页（Tab） */
 	@FXML
 	private Tab moreTab;
@@ -57,15 +70,39 @@ public class FrameController {
 	@FXML
 	private StackPane defaultPane;
 	
+	/** 菜单项 - 设置 - 显示拖拽位置提示 */
+	@FXML
+	private CheckMenuItem showDragPosCMI;
+
+	/** 菜单项 - 设置 - 使用多分支历史记录 */
+	@FXML
+	private CheckMenuItem useMultiHistoryCMI;
+	
 	/** 自动初始化调用 */
     @FXML
     private void initialize() {
     	
     	// 为默认画布新建图层管理器并设为画布管理器的当前画布
-    	PaneManager.setCurrentPane(new LayerManager(defaultPane));
+    	LayerManager newPane = new LayerManager(defaultPane);
+    	PaneManager.getInstance().add(newPane);
+    	PaneManager.getInstance().setCurrentPane(newPane);
 
     	// 初始化属性面板
     	propertiesController.refreshPropertiesView();
+    	
+    	// 初始化菜单栏设置选项
+    	showDragPosCMI.setSelected(State.showDragAnchorPosTips);
+    	showDragPosCMI.setOnAction(e -> {
+    		if (showDragPosCMI.isSelected())
+    			State.showDragAnchorPosTips = true;
+    		else State.showDragAnchorPosTips = false;
+    	});
+    	useMultiHistoryCMI.setSelected(State.showMultiHistory);
+    	useMultiHistoryCMI.setOnAction(e -> {
+    		if (useMultiHistoryCMI.isSelected())
+    			State.showMultiHistory = true;
+    		else State.showMultiHistory = false;
+    	});
     	
     	// 添加复制粘贴的快捷键监听；添加图形复选Ctrl的快捷键监听
     	frameWindow.setOnKeyPressed(e -> {
@@ -73,13 +110,31 @@ public class FrameController {
         		// 复制(Ctrl+C)
         		if (e.getCode() == KeyCode.C) {
         			// 获取选中的所有图形
-        			Selector selector = PaneManager.getCurrentPane().getSelector();
-        			Clipboard.getInstance().copy(selector.getList());
+        			Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
+        			Clipboard.getInstance().copy(selector.getNodes());
         		}
         		// 粘贴(Ctrl+V)
         		else if (e.getCode() == KeyCode.V) {
         			Clipboard.getInstance().paste();
+    				// 添加到历史记录
+    				App.frameController.getHistoryController().saveAsHistory("复制粘贴");
         		}
+        		// 撤销(Ctrl+Z)
+        		else if (e.getCode() == KeyCode.Z) {
+        			historyController.undoToLast();
+        		}
+        		// 重做(Ctrl+Y)
+        		else if (e.getCode() == KeyCode.Y) {
+        			historyController.redoToNext();
+        		}
+    		}
+			// 删除(Delete)
+    		else if (e.getCode() == KeyCode.DELETE) {
+    			Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
+    			PaneManager.getInstance().getCurrentPane().remove(selector.getNodes());
+    			selector.removeAll();
+    	    	// 刷新属性面板
+    	    	propertiesController.refreshPropertiesView();
     		}
     	});
     	
@@ -92,12 +147,17 @@ public class FrameController {
 		return this.propertiesController;
 	}
 
+    /** 获取历史面板控制器 */
+	public HistoryController getHistoryController() {
+		return this.historyController;
+	}
+
 	/** 根据图形的选择情况刷新画布 */
 	public void refreshView() {
 		// 获取画布上的所有图形
-		List<ANodeWA> allNodes = PaneManager.getCurrentPane().getAllNodes();
+		List<ANodeWA> allNodes = PaneManager.getInstance().getCurrentPane().getAllNodes();
 		// 获取选中的所有图形
-		Selector selector = PaneManager.getCurrentPane().getSelector();
+		Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
 		Iterator<ANodeWA> it = allNodes.iterator();
 		while (it.hasNext()) {
 			ANodeWA node = it.next();

@@ -9,4 +9,7 @@ public class State {
 	/** 是否显示拖拽时锚点位置提示 */
 	public static boolean showDragAnchorPosTips = true;
 
+	/** 是否采用多重历史记录（即是否有多个分支） */
+	public static boolean showMultiHistory = false;
+	
 }

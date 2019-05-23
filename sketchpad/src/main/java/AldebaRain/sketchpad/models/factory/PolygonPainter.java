@@ -1,7 +1,8 @@
 package AldebaRain.sketchpad.models.factory;
 
+import AldebaRain.sketchpad.App;
 import AldebaRain.sketchpad.Default;
-import AldebaRain.sketchpad.manager.PaneManager;
+import AldebaRain.sketchpad.hierarchy.PaneManager;
 import AldebaRain.sketchpad.models.product.PolygonWA;
 import javafx.scene.shape.Polygon;
 
@@ -27,7 +28,17 @@ public class PolygonPainter implements IPainter {
         }
 		PolygonWA polygonWA = new PolygonWA(poly, x, y);
 		// 在当前画布的当前图层绘制
-		PaneManager.getCurrentPane().getCurrentLayer().add(polygonWA);
+		PaneManager.getInstance().getCurrentPane().add(polygonWA);
+		// 添加到历史记录
+		if (vergeNum == 3)
+			App.frameController.getHistoryController().saveAsHistory("绘制正三角形");
+		else
+			App.frameController.getHistoryController().saveAsHistory("绘制正多边形");
 	}
-	
+
+	@Override
+	public void paint() {
+    	this.paint(Default.shapeOX, Default.shapeOY, Default.polygonVergeNum, Default.polygonRadius);
+	}
+
 }
