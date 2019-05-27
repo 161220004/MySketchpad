@@ -1,6 +1,6 @@
 package AldebaRain.sketchpad;
 
-/** 存储预设值 */
+/** 存储预设的全局常量 */
 public class Default {
 
 	/** 图形默认中心X */

@@ -1,12 +1,5 @@
 package AldebaRain.sketchpad.models.product;
 
-import AldebaRain.sketchpad.App;
-import AldebaRain.sketchpad.State;
-import AldebaRain.sketchpad.hierarchy.PaneManager;
-import AldebaRain.sketchpad.models.anchor.AnchorSet;
-import AldebaRain.sketchpad.selector.Selector;
-import javafx.scene.Node;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -16,177 +9,66 @@ import javafx.scene.paint.Color;
  * 是适配器模式的目标抽象类，也是工厂模式的抽象产品类<br>
  * 同时也使用了原型模式，以实现复制粘贴
  * 
- * @see AShapeWA
- * @see LineWA
+ * @see ShapeWA
  */
 public abstract class ANodeWA {
 
-	/** 图形类型 */
-	protected NodeType type;
-	
-	/** Adaptee - 图形/直线 */
-	protected Node node;
-	
-	/** Adaptee - 图形的锚点集 */
-	protected AnchorSet anchors;
-
-	/** 原位置- 光标 */
-	private double originMouseX, originMouseY;
-	
-	/** 原位置 - 图形 */
-	private double originX, originY;
-
 	/** 选中事件 - 释放鼠标后根据情况选择图形或取消选择 */
-	protected void refreshSelected(MouseEvent e) {
-		Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
-		// 若进行了拖拽，则选择器不发生改变
-		if (State.hasDragged)
-			return;
-		// 若没有拖拽且已选中
-		else if (selector.contains(this)) {
-			// 若是复选状态则取消当前图形的选择
-			if (e.isControlDown())
-				selector.remove(this);
-			// 若是单选状态，若当前只选中一个则取消选择；若当前选中多个则改为仅选择当前图形
-			else if (selector.count() == 1)
-				selector.remove(this);
-			else selector.change(this);
-		}
-		// 若没有拖拽且未选中
-		else {
-			// 若是复选状态则添加选择当前图形
-			if (e.isControlDown())
-				selector.add(this);
-			// 若是单选状态则仅选择当前图形
-			else selector.change(this);
-		}
-	}
+	protected abstract void refreshSelected(MouseEvent e);
 	
 	/** 图形拖拽事件- 拖拽前初始化以及图形选定 */
-	protected void initBeforeDrag(MouseEvent e) {
-    	originMouseX = e.getSceneX();
-        originMouseY = e.getSceneY();
-        originX = anchors.getTranslateX();
-        originY = anchors.getTranslateY();
-	}
+	protected abstract void initBeforeDrag(MouseEvent e);
 
 	/** 图形拖拽事件 - 正在拖拽 */
-	protected void followMouseDrag(MouseEvent e) {
-    	double dx = e.getSceneX() - originMouseX;
-        double dy = e.getSceneY() - originMouseY;
-        this.setTranslateX(dx + originX);
-        this.setTranslateY(dy + originY);
-	}
+	protected abstract void followMouseDrag(MouseEvent e);
 
 	/** 图形拖拽事件 - 结束拖拽 */
-	protected void exitMouseDrag() {
-        anchors.setOriginPositions();
-		// 若拖拽了图形，添加到历史记录
-		if (State.hasDragged)
-			App.frameController.getHistoryController().saveAsHistory(this.getType().getDesc() + "位置变换");
-	}	
-
+	protected abstract void exitMouseDrag();
+	
 	/** 添加图形拖拽事件 */
-	protected void addMouseEvent() {
-		node.setOnMousePressed(e -> {
-			// 仅鼠标左键拖拽
-			if (e.getButton() == MouseButton.PRIMARY) {
-				State.hasDragged = false;
-				initBeforeDrag(e);
-				// 刷新属性面板和画布
-				App.frameController.refreshView();
-				App.frameController.getPropertiesController().refreshPropertiesView();
-			}
-		});
-		node.setOnMouseDragged(e -> {
-			// 仅鼠标左键拖拽
-			if (e.getButton() == MouseButton.PRIMARY) {
-				State.hasDragged = true;
-				followMouseDrag(e);
-			}
-		});
-		node.setOnMouseReleased(e -> {
-			// 仅鼠标左键拖拽
-			if (e.getButton() == MouseButton.PRIMARY) {
-				exitMouseDrag();
-				refreshSelected(e);
-				State.hasDragged = false;
-				// 刷新属性面板和画布
-				App.frameController.refreshView();
-				App.frameController.getPropertiesController().refreshPropertiesView();
-			}
-		});
-	}
+	protected abstract void addMouseEvent();
 
 	/** 显示锚点集 */
-	public void showAnchors() {
-		anchors.show();
-	}
+	public abstract void showAnchors();
 	
 	/** 隐藏锚点集 */
-	public void hideAnchors() {
-		anchors.hide();
-	}
+	public abstract void hideAnchors();
 	
 	/** 添加图形到Pane */
-	public void addtoPane(Pane pane) {
-		pane.getChildren().add(node);
-		anchors.addtoPane(pane);
-	}
+	public abstract void addtoPane(Pane pane);
 
 	/** 从Pane移除图形 */
-	public void removeFromPane(Pane pane) {
-		pane.getChildren().remove(node);
-		anchors.removeFromPane(pane);
-	}
+	public abstract void removeFromPane(Pane pane);
 
 	/** 获取图形类型 */
-	public NodeType getType() {
-		return type;
-	}
+	public abstract NodeType getType();
 
 	/** 获取图形描述 */
 	public abstract String getDescription();
 
 	/** 适配函数 - 获取图形中心X坐标 */
-	public double getTranslateX() {
-		return anchors.getTranslateX();
-	}
+	public abstract double getTranslateX();
 
 	/** 适配函数 - 重设图形中心X坐标 */
-	public void setTranslateX(double x) {
-		anchors.setTranslateX(x);
-	}
+	public abstract void setTranslateX(double x);
 
 	/** 适配函数 - 获取图形中心Y坐标 */
-	public double getTranslateY() {
-		return anchors.getTranslateY();
-	}
+	public abstract double getTranslateY();
 
 	/** 适配函数 - 重设图形中心Y坐标 */
-	public void setTranslateY(double y) {
-		anchors.setTranslateY(y);
-	}
+	public abstract void setTranslateY(double y);
 
 	/** 适配函数 - 获取图形X方向长度 */
-	public double getLengthX() {
-		return anchors.getLengthX();
-	}
+	public abstract double getLengthX();
 
 	/** 适配函数 - 重设图形X方向长度 */
-	public void setLengthX(double xLen) {
-		anchors.setLengthX(xLen);
-	}
+	public abstract void setLengthX(double xLen);
 
 	/** 适配函数 - 获取图形Y方向长度 */
-	public double getLengthY() {
-		return anchors.getLengthY();
-	}
+	public abstract double getLengthY();
 
 	/** 适配函数 - 重设图形Y方向长度 */
-	public void setLengthY(double yLen) {
-		anchors.setLengthY(yLen);
-	}
+	public abstract void setLengthY(double yLen);
 
 	/** 适配函数 - 获取图形边框宽度 */
 	public abstract double getStrokeWidth();

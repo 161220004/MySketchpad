@@ -3,6 +3,11 @@ package AldebaRain.sketchpad.models.anchor;
 import AldebaRain.sketchpad.App;
 import javafx.scene.shape.Ellipse;
 
+/**
+ * EllipseWA中的锚点(9个)，附着于Ellipse类型.<br>
+ * 
+ * @see AnchorShapeSet
+ */
 public class AnchorEllipseSet extends AnchorShapeSet {
 
 	/** 构造函数A - 当Ellipse形状已确认时调用 */

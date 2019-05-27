@@ -3,6 +3,7 @@ package AldebaRain.sketchpad.models.factory;
 /** 
  * 锚点图形绘制器.<br>
  * 是工厂模式的抽象工厂类
+ * 包括一个默认绘制方法和一个指定参数的绘制方法
  */
 public interface IPainter {
 

@@ -5,12 +5,13 @@ import javafx.scene.shape.Rectangle;
 
 /** 
  * 锚点矩形类(Rectangle With Anchors).<br> 
+ * 是适配器模式的适配器类；
  * 是工厂模式的具体产品类
  * 
- * @see AShapeWA
+ * @see ShapeWA
  * @see ANodeWA
  */
-public class RectangleWA extends AShapeWA {
+public class RectangleWA extends ShapeWA {
 
 	/** 构造函数A - 当Rectangle形状已确认时调用 */
 	public RectangleWA(Rectangle rect) {

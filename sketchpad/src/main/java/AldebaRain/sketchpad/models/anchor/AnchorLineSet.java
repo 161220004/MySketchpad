@@ -42,22 +42,6 @@ public class AnchorLineSet extends AnchorSet {
 		addMouseEvent();
 	}
 
-	/** 构造函数B（危险） - 当Line形状未知时调用 */
-	@Deprecated
-	public AnchorLineSet(Line node, double xStart, double yStart, double xEnd, double yEnd) {
-		parentNode = node;
-		parentNode.setTranslateX((xStart + xEnd) / 2);
-		parentNode.setTranslateY((yStart + yEnd) / 2);
-		parentLine = (Line)parentNode;
-		xStartBefore = xStart;
-		yStartBefore = yStart;
-		xEndBefore = xEnd;
-		yEndBefore = yEnd;
-		anchors = new ArrayList<>();
-		addAnchors(parentNode, (xEnd - xStart), (yEnd - yStart));
-		addMouseEvent();
-	}
-
 	/** 构造函数初始化 - 添加锚点 */
 	protected void addAnchors(Node node, double xLength, double yLength) {
 		anchors.add(new Anchor(AnchorID.C, node, xLength, yLength));

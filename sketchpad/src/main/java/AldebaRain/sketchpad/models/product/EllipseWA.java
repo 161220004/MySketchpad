@@ -5,12 +5,13 @@ import javafx.scene.shape.Ellipse;
 
 /** 
  * 锚点圆形类(Circle With Anchors).<br> 
+ * 是适配器模式的适配器类；
  * 是工厂模式的具体产品类
  * 
- * @see AShapeWA
+ * @see ShapeWA
  * @see ANodeWA
  */
-public class EllipseWA extends AShapeWA {
+public class EllipseWA extends ShapeWA {
 
 	/** 构造函数A - 当Ellipse形状已确认时调用 */
 	public EllipseWA(Ellipse ellipse) {

@@ -8,6 +8,11 @@ import AldebaRain.sketchpad.Default;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Polygon;
 
+/**
+ * PolygonWA中的锚点(顶点数个)，附着于Polygon类型.<br>
+ * 
+ * @see AnchorSet
+ */
 public class AnchorPolygonSet extends AnchorSet {
 
 	/** 多边形边数 */

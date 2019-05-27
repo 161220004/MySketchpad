@@ -14,9 +14,12 @@ import javafx.scene.layout.Pane;
  * 维护一个所有图层的列表；
  * 维护一个图形选择器；
  * 一个图层管理器对应着一个画板和一组选中的图形；
- * 是备忘录模式的源发器（一个画布保存一份历史记录）
+ * 采用备忘录模式（一个画布保存一份历史记录）
  * 
  * @see Layer
+ * @see Selector
+ * @see MementoManager
+ * @see PaneMemento
  */
 public class LayerManager {
 	

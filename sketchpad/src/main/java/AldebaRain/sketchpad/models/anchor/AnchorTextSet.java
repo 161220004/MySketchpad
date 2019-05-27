@@ -5,6 +5,11 @@ import AldebaRain.sketchpad.Default;
 import javafx.scene.control.Label;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * TextWA中的锚点(9个)，在AnchorRectangleSet的基础上考虑文本Label.<br>
+ * 
+ * @see AnchorRectangleSet
+ */
 public class AnchorTextSet extends AnchorRectangleSet {
 
 	/** 该文本标签 */

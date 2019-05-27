@@ -18,6 +18,11 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
+/**
+ * 属性面板
+ * 
+ * @see FrameController
+ */
 public class PropertiesController {
 
 	/** 属性面板 */

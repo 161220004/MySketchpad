@@ -11,11 +11,12 @@ import javafx.scene.layout.Pane;
 
 /** 
  * 一个图形的抽象锚点集.<br>
- * ShapeWA类型有9个锚点，LineWA类型有3个锚点<br>
+ * ShapeWA类型有9个锚点，LineWA类型有3个锚点，PolygonWA有顶点数个锚点<br>
  * 
  * @see Anchor
  * @see AnchorShapeSet 
  * @see AnchorLineSet 
+ * @see AnchorPolygonSet
  */
 public abstract class AnchorSet {
 

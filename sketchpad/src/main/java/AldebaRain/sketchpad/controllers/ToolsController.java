@@ -8,6 +8,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * 工具箱
+ * 
+ * @see FrameController
+ */
 public class ToolsController {
 
 	/** 工具箱 */

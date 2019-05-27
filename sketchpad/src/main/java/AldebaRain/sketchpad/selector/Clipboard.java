@@ -35,7 +35,7 @@ public class Clipboard {
 	/** 粘贴操作，将剪贴板中的所有图形绘制到当前画布的当前图层 */
 	public void paste() {
 		for (ANodeWA node: nodes) {
-			PaneManager.getInstance().getCurrentPane().add(node);
+			PaneManager.getInstance().getCurrentPane().add(node.clone());
 		}
 	}
 	

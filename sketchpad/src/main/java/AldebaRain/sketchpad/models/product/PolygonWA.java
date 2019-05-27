@@ -5,11 +5,13 @@ import javafx.scene.shape.Polygon;
 
 /** 
  * 锚点多边形类(Polygon With Anchors).<br> 
+ * 是适配器模式的适配器类；
  * 是工厂模式的具体产品类
  * 
+ * @see ShapeWA
  * @see ANodeWA
  */
-public class PolygonWA extends AShapeWA {
+public class PolygonWA extends ShapeWA {
 
 	/** 构造函数A - 当Polygon形状已确认时调用 */
 	public PolygonWA(Polygon polygon, double x, double y) {

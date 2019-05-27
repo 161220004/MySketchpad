@@ -8,9 +8,10 @@ import javafx.scene.shape.Line;
  * 锚点Line适配器(Line With Anchors).<br> 
  * 是适配器模式的适配器类
  * 
+ * @see ShapeWA
  * @see ANodeWA
  */
-public class LineWA extends ANodeWA {
+public class LineWA extends ShapeWA {
 
 	/** 构造函数A - 当Line形状已确认时调用 */
 	public LineWA(Line line) {
@@ -48,17 +49,17 @@ public class LineWA extends ANodeWA {
 
 	@Override
 	public double getStrokeWidth() {
-		return ((Line)node).getStrokeWidth();
+		return node.getStrokeWidth();
 	}
 	
 	@Override
 	public Color getFill() {
-		return (Color)((Line)node).getFill();
+		return (Color)node.getFill();
 	}
 
 	@Override
 	public Color getStroke() {
-		return (Color)((Line)node).getStroke();
+		return (Color)node.getStroke();
 	}
 
 	/** 重设Start端点，即直线初始化时LU锚点的X坐标 */
@@ -83,32 +84,31 @@ public class LineWA extends ANodeWA {
 
 	@Override
 	public void setStrokeWidth(double width) {
-		((Line)node).setStrokeWidth(width);
+		node.setStrokeWidth(width);
 	}
 
 	@Override
 	public void setFill(Color color) {
-		((Line)node).setFill(color);
+		node.setFill(color);
 	}
 
 	@Override
 	public void setStroke(Color color) {
-		((Line)node).setStroke(color);
+		node.setStroke(color);
 	}
 
 	/** 克隆一个Line类型 */
 	private Line cloneLine() {
-		Line line = (Line)node;
 		Line newLine = new Line();
 		// 少量偏移
-		newLine.setStartX(line.getStartX());
-		newLine.setStartY(line.getStartY());
-		newLine.setEndX(line.getEndX());
-		newLine.setEndY(line.getEndY());
-		newLine.setTranslateX(line.getTranslateX());
-		newLine.setTranslateY(line.getTranslateY());
-		newLine.setStrokeWidth(line.getStrokeWidth());
-		newLine.setStroke(line.getStroke());
+		newLine.setStartX(((Line)node).getStartX());
+		newLine.setStartY(((Line)node).getStartY());
+		newLine.setEndX(((Line)node).getEndX());
+		newLine.setEndY(((Line)node).getEndY());
+		newLine.setTranslateX(node.getTranslateX());
+		newLine.setTranslateY(node.getTranslateY());
+		newLine.setStrokeWidth(node.getStrokeWidth());
+		newLine.setStroke(node.getStroke());
 		return newLine;
 	}
 	

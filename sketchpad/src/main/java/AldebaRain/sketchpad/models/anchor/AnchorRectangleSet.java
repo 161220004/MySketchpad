@@ -3,6 +3,11 @@ package AldebaRain.sketchpad.models.anchor;
 import AldebaRain.sketchpad.App;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * RectangleWA中的锚点(9个)，附着于Rectangle类型.<br>
+ * 
+ * @see AnchorShapeSet
+ */
 public class AnchorRectangleSet extends AnchorShapeSet {
 
 	/** 构造函数A - 当Ellipse形状已确认时调用 */

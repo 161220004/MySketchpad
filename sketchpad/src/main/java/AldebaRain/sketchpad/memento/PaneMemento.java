@@ -7,7 +7,7 @@ import AldebaRain.sketchpad.hierarchy.Layer;
 import AldebaRain.sketchpad.models.product.ANodeWA;
 
 /**
- * 画布备忘录，备份整个画布.<br>
+ * 画布的备份单元，备份整个画布.<br>
  * 备忘录模式，用于多步撤销
  * 
  * @see MementoManager

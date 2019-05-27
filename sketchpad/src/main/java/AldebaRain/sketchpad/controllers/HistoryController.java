@@ -3,7 +3,6 @@ package AldebaRain.sketchpad.controllers;
 import java.util.Iterator;
 
 import AldebaRain.sketchpad.hierarchy.PaneManager;
-import AldebaRain.sketchpad.memento.PaneMemento;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -11,6 +10,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * 历史记录面板
+ * 
+ * @see FrameController
+ */
 public class HistoryController {
 
 	/** 历史面板 */
@@ -38,8 +42,9 @@ public class HistoryController {
     	// 添加选中某个树节点事件的监听
     	historyTree.getSelectionModel().selectedItemProperty().addListener(listener -> {
         	int id = historyTree.getSelectionModel().getSelectedIndex() - 1; // 选中的id(使其从0开始)
-        	// 回退到该历史节点
-        	PaneManager.getInstance().getCurrentPane().doHistory(id);
+        	// 若不是选中当前节点，回退到该历史节点
+        	if (id != PaneManager.getInstance().getCurrentPane().getHistoryIndex())
+        		PaneManager.getInstance().getCurrentPane().doHistory(id);
         	// 重设小图标
         	renderTreeGraphic();
     	});

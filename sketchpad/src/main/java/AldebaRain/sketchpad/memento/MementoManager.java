@@ -7,6 +7,13 @@ import java.util.List;
 import AldebaRain.sketchpad.App;
 import AldebaRain.sketchpad.State;
 
+/**
+ * 管理历史记录.<br>
+ * 备忘录模式
+ * 
+ * @see LayerManager
+ * @see PaneMemento
+ */
 public class MementoManager {
 
 	/** 全部历史记录 */

@@ -10,7 +10,10 @@ import AldebaRain.sketchpad.models.product.ANodeWA;
 import AldebaRain.sketchpad.selector.Clipboard;
 import AldebaRain.sketchpad.selector.Selector;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
@@ -20,13 +23,11 @@ import javafx.scene.layout.StackPane;
 
 /**
  * 主界面控制器.<br>
- * 引用的子界面有：菜单栏，工具箱，属性面板，历史记录面板，层次面板
+ * 引用的子界面有：工具箱，属性面板，历史记录面板
  * 
- * @see MenuController
  * @see ToolsController
  * @see PropertiesController
  * @see HistoryController
- * @see HierarchyController
  */
 public class FrameController {
 
@@ -78,6 +79,10 @@ public class FrameController {
 	@FXML
 	private CheckMenuItem useMultiHistoryCMI;
 	
+	/** 菜单项 - 关于 */
+	@FXML
+	private MenuItem aboutMenuItem;
+	
 	/** 自动初始化调用 */
     @FXML
     private void initialize() {
@@ -102,6 +107,15 @@ public class FrameController {
     		if (useMultiHistoryCMI.isSelected())
     			State.showMultiHistory = true;
     		else State.showMultiHistory = false;
+    	});
+    	
+    	// 初始化菜单栏关于选项
+    	aboutMenuItem.setOnAction(e -> {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("关于");
+    		alert.setHeaderText("此项目为OOSC期末作业，由曹洋笛(AldebaRain)原创");
+    		alert.setContentText("GitHub地址请见：https://github.com/161220004/MySketchpad");
+    		alert.showAndWait();
     	});
     	
     	// 添加复制粘贴的快捷键监听；添加图形复选Ctrl的快捷键监听
@@ -135,6 +149,8 @@ public class FrameController {
     			selector.removeAll();
     	    	// 刷新属性面板
     	    	propertiesController.refreshPropertiesView();
+				// 添加到历史记录
+				App.frameController.getHistoryController().saveAsHistory("删除");
     		}
     	});
     	

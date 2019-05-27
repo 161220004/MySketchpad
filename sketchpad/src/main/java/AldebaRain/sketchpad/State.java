@@ -1,6 +1,6 @@
 package AldebaRain.sketchpad;
 
-/** 定义当前状态 */
+/** 定义当前状态，全局变量 */
 public class State {
 
 	/** 在图形上点击鼠标后是否进行了拖拽 */
@@ -11,5 +11,5 @@ public class State {
 
 	/** 是否采用多重历史记录（即是否有多个分支） */
 	public static boolean showMultiHistory = false;
-	
+
 }

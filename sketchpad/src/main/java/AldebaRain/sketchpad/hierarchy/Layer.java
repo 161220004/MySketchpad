@@ -9,10 +9,10 @@ import javafx.scene.layout.Pane;
 
 /**
  * 图层，即图形管理.<br>
- * 仅仅是一组图形，不对应UI的结构
+ * 仅仅是一组图形，不对应UI的结构；
  * 维护一个图层上的所有图形列表
  * 
- * @see AManager
+ * @see LayerManager
  */
 public class Layer {
 

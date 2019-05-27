@@ -4,6 +4,7 @@ import AldebaRain.sketchpad.App;
 import AldebaRain.sketchpad.State;
 import AldebaRain.sketchpad.hierarchy.PaneManager;
 import AldebaRain.sketchpad.models.anchor.AnchorTextSet;
+import AldebaRain.sketchpad.selector.Selector;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -12,8 +13,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
-/**
- * 用于添加文字描述
+/** 
+ * 锚点文本框类(Text With Anchors)，用于编写描述文本.<br> 
+ * 是适配器模式的适配器类；
+ * 是工厂模式的具体产品类
+ * 
+ * @see RectangleWA
+ * @see ANodeWA
  */
 public class TextWA extends RectangleWA {
 
@@ -41,11 +47,13 @@ public class TextWA extends RectangleWA {
 	/** 重写鼠标事件 */
 	@Override
 	protected void addMouseEvent() {
+		Selector selector = PaneManager.getInstance().getCurrentPane().getSelector();
 		label.setOnMousePressed(e -> {
 			// 仅鼠标左键拖拽
-			if (e.getButton() == MouseButton.PRIMARY) {
+			if (e.getButton() == MouseButton.PRIMARY && selector.contains(this)) {
 				State.hasDragged = false;
-				initBeforeDrag(e);
+				for (ANodeWA one: selector.getNodes())
+					one.initBeforeDrag(e);
 				// 刷新属性面板和画布
 				App.frameController.refreshView();
 				App.frameController.getPropertiesController().refreshPropertiesView();
@@ -53,16 +61,28 @@ public class TextWA extends RectangleWA {
 		});
 		label.setOnMouseDragged(e -> {
 			// 仅鼠标左键拖拽
-			if (e.getButton() == MouseButton.PRIMARY) {
+			if (e.getButton() == MouseButton.PRIMARY && selector.contains(this)) {
 				State.hasDragged = true;
-				followMouseDrag(e);
+				for (ANodeWA one: selector.getNodes()) 
+					one.followMouseDrag(e);
 			}
 		});
 		label.setOnMouseReleased(e -> {
 			// 鼠标左键拖拽
 			if (e.getButton() == MouseButton.PRIMARY) {
-				exitMouseDrag();
-				refreshSelected(e);
+				this.refreshSelected(e);
+				if (selector.contains(this)) {
+					for (ANodeWA one: selector.getNodes()) {
+						one.exitMouseDrag();
+					}
+					// 若拖拽了图形，添加到历史记录
+					if (State.hasDragged) {
+						if (selector.count() == 1)
+							App.frameController.getHistoryController().saveAsHistory(this.getType().getDesc() + "位置变换");
+						else
+							App.frameController.getHistoryController().saveAsHistory("选中图形位置变换");
+					}
+				}
 				State.hasDragged = false;
 				// 刷新属性面板和画布
 				App.frameController.refreshView();
